@@ -69,6 +69,21 @@
 
     @endif
 
+    <!-- Reply Comments -->
+@if($document->replyComments->isNotEmpty())
+    <div class="comments-box reply-comments">
+        <h3>Reply Statement:</h3>
+        @foreach($document->replyComments as $reply)
+            <div class="comment-item">
+                <strong>{{ $reply->user->name }} ({{ $reply->user->role }})</strong>
+                <p class="comment-text">{{ $reply->comment }}</p>
+                <p class="comment-time" style="font-size: 12px;">{{ $reply->created_at->diffForHumans() }}</p>
+            </div>
+        @endforeach
+    </div>
+@endif
+
+
 <!-- Receiving Comment -->
 
     @if($document->receivingComments->isNotEmpty())
@@ -134,7 +149,7 @@
 
                     <!-- Buttons for Accomplish and Reply -->
                     <button type="submit" class="btn-primary" onclick="setActionType('accomplish')">Accomplish</button>
-                    @if(auth()->user()->role === 'receiving')
+                    @if(auth()->user()->usertype === 'section')
                     <button type="submit" class="btn-secondary" onclick="setActionType('reply')">Reply</button>
                     @endif
                 </form>

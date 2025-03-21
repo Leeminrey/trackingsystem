@@ -10,22 +10,22 @@
 
     <div class="form-group">
         <label for="locator_no">Locator No:</label>
-        <input type="text" id="locator_no" name="locator_no" value="{{ $document->locator_no }}" required>
+        <input type="text" class="form-control" id="locator_no" name="locator_no" value="{{ $document->locator_no }}" required>
     </div>
 
     <div class="form-group">
         <label for="subject">Subject:</label>
-        <input type="text" id="subject" name="subject" value="{{ $document->subject }}" required>
+        <input type="text" class="form-control" id="subject" name="subject" value="{{ $document->subject }}" required>
     </div>
 
     <div class="form-group">
         <label for="date_received">Date Received:</label>
-        <input type="date" id="date_received" name="date_received" value="{{ $document->date_received }}" required>
+        <input type="date" class="form-control"  id="date_received" name="date_received" value="{{ $document->date_received }}" required>
     </div>
 
     <div class="form-group">
         <label for="details">Details:</label>
-        <textarea id="details" name="details" rows="4">{{ $document->details }}</textarea>
+        <textarea id="details" class="form-control"  name="details" rows="4">{{ $document->details }}</textarea>
     </div>
 
     <div class="form-group">

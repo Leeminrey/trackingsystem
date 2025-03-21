@@ -2,6 +2,7 @@
 
 @section('content')
 
+
 @include('components.breadcrumb')
 
 @if (session('success'))

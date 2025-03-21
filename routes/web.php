@@ -11,6 +11,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\LibrarianCommentController;
+use App\Http\Controllers\ReplyComment;
 
 
 
@@ -82,7 +83,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/documents/{documentId}/comments', [CommentController::class, 'store'])->name('comments.store');
     Route::get('/documents/{documentId}/comments', [CommentController::class, 'index'])->name('comments.index');
     Route::get('/documents/{documentId}/comments', [DocumentController::class, 'getComments']);
-   
+
 });
 
 // Route::post('/documents/{id}/reply', [DocumentController::class, 'reply'])->name('documents.reply');

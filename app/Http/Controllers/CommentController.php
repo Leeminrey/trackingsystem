@@ -5,76 +5,77 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Document;
 use App\Models\Comment;
+use App\Models\ReplyComment;
 
 class CommentController extends Controller
 {
 
     public function store(Request $request, $documentId)
-{
-    $request->validate([
-        'comments' => 'required|string|max:500',
-        'action_type' => 'required|string',
-    ]);
-
-    $document = Document::findOrFail($documentId);
-
-    // Prevent uploader from marking their own document as accomplished
-    if ($document->uploader_id == auth()->user()->id && $request->action_type === 'accomplish') {
-        return redirect()->back()->with('error', "You cannot mark your own document as accomplished.");
-    }
-
-    // Check if the user has already commented
-    $existingComment = Comment::where('document_id', $document->id)
-                              ->where('commenter_id', auth()->user()->id)
-                              ->first();
-
-    if ($existingComment) {
-        $existingComment->comments = $request->comments;
-
-        // Set accomplish status only for 'accomplish' action
-        if ($request->action_type === 'accomplish') {
-            $existingComment->accomplish_status = 1;
-        } else {
-            $existingComment->accomplish_status = 0; // Reset accomplish status for replies
-        }
-
-        $existingComment->save();
-    } else {
-        Comment::create([
-            'document_id'       => $document->id,
-            'commenter_id'      => auth()->user()->id,
-            'comments'          => $request->comments,
-            'accomplish_status' => $request->action_type === 'accomplish' ? 1 : 0,
+    {
+        $request->validate([
+            'comments' => 'required|string|max:500',
+            'action_type' => 'required|string',
         ]);
-    }
-
-    // If it's an accomplish action, check and update status
-    if ($request->action_type === 'accomplish' && $this->anySectionAccomplished($document)) {
-        $document->update(['status' => 'completed']);
-    }
-
-    // If it's a reply, change document status back to 'pending' and update fields with "RE:"
-    if ($request->action_type === 'reply') {
-        if ($document->status === 'approved') {
-            $document->status = 'pending';
-            $document->uploaded_from = 'incoming';
+    
+        $document = Document::findOrFail($documentId);
+    
+        // Prevent uploader from marking their own document as accomplished
+        if ($document->uploader_id == auth()->user()->id && $request->action_type === 'accomplish') {
+            return redirect()->back()->with('error', "You cannot mark your own document as accomplished.");
         }
-
-        // Add "RE:" to specific fields (prevent double "RE:" prefix)
-        $document->locator_no = str_starts_with($document->locator_no, 'RE:') ? $document->locator_no : 'RE: ' . $document->locator_no;
-        $document->subject = str_starts_with($document->subject, 'RE:') ? $document->subject : 'RE: ' . $document->subject;
-        $document->received_from = str_starts_with($document->received_from, 'RE:') ? $document->received_from : 'RE: ' . $document->received_from;
-        $document->user->name = str_starts_with($document->user->name, 'RE:') ? $document->user->name : 'RE: ' . $document->user->name;
-        $document->save();
+    
+        if ($request->action_type === 'accomplish') {
+            // Handle accomplish action (save in comments table)
+            $existingComment = Comment::where('document_id', $document->id)
+                                    ->where('commenter_id', auth()->user()->id)
+                                    ->first();
+    
+            if ($existingComment) {
+                $existingComment->comments = $request->comments;
+                $existingComment->accomplish_status = 1;
+                $existingComment->save();
+            } else {
+                Comment::create([
+                    'document_id'       => $document->id,
+                    'commenter_id'      => auth()->user()->id,
+                    'comments'          => $request->comments,
+                    'accomplish_status' => 1,
+                ]);
+            }
+    
+            // Check if the document should be marked as completed
+            if ($this->anySectionAccomplished($document)) {
+                $document->update(['status' => 'completed']);
+            }
+    
+            $message = "Comment added and marked as accomplished successfully. " . $this->updateDocumentAccomplishStatus($document);
+        } 
+        elseif ($request->action_type === 'reply') {
+            // Handle reply action (save in reply_comments table)
+            ReplyComment::create([
+                'document_id' => $document->id,
+                'user_id'     => auth()->user()->id,
+                'comment'     => $request->comments,
+            ]);
+    
+            // Change document status back to 'pending' and update fields with "RE:"
+            if ($document->status === 'approved') {
+                $document->status = 'checking';
+                $document->uploaded_from = 'outgoing';
+            }
+    
+            $document->locator_no = str_starts_with($document->locator_no, 'RE:') ? $document->locator_no : 'RE: ' . $document->locator_no;
+            $document->subject = str_starts_with($document->subject, 'RE:') ? $document->subject : 'RE: ' . $document->subject;
+            $document->received_from = str_starts_with($document->received_from, 'RE:') ? $document->received_from : 'RE: ' . $document->received_from;
+            $document->user->name = str_starts_with($document->user->name, 'RE:') ? $document->user->name : 'RE: ' . $document->user->name;
+            $document->save();
+    
+            $message = "Reply added successfully. Document status set to pending and details updated.";
+        }
+    
+        return redirect()->back()->with('success', $message);
     }
 
-    // Prepare success message
-    $message = $request->action_type === 'accomplish'
-        ? "Comment added and marked as accomplished successfully. " . $this->updateDocumentAccomplishStatus($document)
-        : "Reply added successfully. Document status set to pending and details updated.";
-
-    return redirect()->back()->with('success', $message);
-}
 
     
     

@@ -122,7 +122,11 @@ public function documentSections()
 }
 
     
-    
+public function replyComments()
+{
+    return $this->hasMany(ReplyComment::class);
+}
+
 
 }
 
