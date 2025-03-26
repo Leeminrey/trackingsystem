@@ -18,7 +18,7 @@
             </p>
             <p><strong>Date Received:</strong> {{ \Carbon\Carbon::parse($document->date_received)->format('M. d, Y') }}</p>
             <p><strong>Date Filed:</strong> {{ \Carbon\Carbon::parse($document->date_filed)->format('M. d, Y') }}</p>
-            <p><strong>Uploader:</strong> {{ $document->user->name }}</p>
+            <p><strong>Uploader:</strong> {{ $document->uploader->name }}</p>
             <p><strong>From:</strong> {{ ucfirst($document->uploaded_from) }}</p>
             <label for="file" class="view-file-label">View File:</label>
             <div class="file-preview" 
@@ -36,52 +36,69 @@
         </div>       
     </div>
 
-
-
-    @if($document->status === 'rejected' || $document->status === 'approved' || $document->status === 'pending in CL' || auth()->user()->role === 'ACL')
-<!-- verifier Comment -->
+    @if($document->status === 'rejected' || $document->status === 'approved' || $document->status === 'pending in CL' || auth()->user()->role === 'ACL' || auth()->user()->role === 'verfier')
+    <!-- Verifier Comment -->
         @if($document->verifierComments->isNotEmpty())
-            <div class="comments-box verifier-comments">
-                <h3>Verifier's Comments:</h3>
-                @foreach($document->verifierComments as $comment)
-                    <div class="comment-item">
-                        <strong>{{ $comment->user->name }} ({{ $comment->user->role }})</strong>
-                        <p class="comment-text">{{ $comment->comment }}</p>
-                        <p class="comment-time" style="font-size: 12px;">{{ $comment->created_at->diffForHumans() }}</p>
-                    </div>
-                @endforeach
-            </div>
+                <div class="comments-box verifier-comments">
+                    <h3>Verifier's Comments:</h3>
+                    @foreach($document->verifierComments as $comment)
+                        <div class="comment-item">
+                            <strong>{{ $comment->user->name }} ({{ $comment->user->role }})</strong>
+                            <p class="comment-text">{{ $comment->comment }}</p>
+                            <p class="comment-time" style="font-size: 12px;">{{ $comment->created_at->diffForHumans() }}</p>
+                        </div>
+                    @endforeach
+                </div>
+            @endif
         @endif
-        
-        <!-- boss Comment -->
+
+        <!-- Librarian Comments -->
         @if($document->librarianComments->isNotEmpty())
             <div class="comments-box librarian-comments">
                 <h3>Librarian's Comments:</h3>
                 @foreach($document->librarianComments as $comment)
-                    <div class="comment-item">
-                        <strong>{{ $comment->user->name }} ({{ $comment->user->role }})</strong>
-                        <p class="comment-text">{{ $comment->comment }}</p>
-                        <p class="comment-time" style="font-size: 12px;">{{ $comment->created_at->diffForHumans() }}</p>
-                    </div>
+                    @if($comment->reply_phase == 0)
+                        <div class="comment-item">
+                            <div class="comment-header">
+                                <strong>{{ $comment->user->name }} ({{ $comment->user->role }})</strong>
+                                <span class="comment-time" style="font-size: 12px;">{{ $comment->created_at->diffForHumans() }}</span>
+                            </div>
+                            <p class="comment-text">{{ $comment->comment }}</p>
+                        </div>
+                    @endif
                 @endforeach
             </div>
         @endif
 
-    @endif
+        @if($document->librarianComments->contains('reply_phase', 1) || $document->replyComments->isNotEmpty())
+        <div class="comments-box reply-comments">
+            <h3>Reply Statement:</h3>
+            
+            {{-- Librarian Replies --}}
+            @foreach($document->librarianComments as $reply)
+                @if($reply->reply_phase == 1)
+                    <div class="comment-item">
+                        <div class="comment-header">
+                            <strong>{{ $reply->user->name }} ({{ $reply->user->role }})</strong>
+                            <span class="comment-time" style="font-size: 12px;">{{ $reply->created_at->diffForHumans() }}</span>
+                        </div>
+                        <p class="comment-text">{{ $reply->comment }}</p>
+                    </div>
+                @endif
+            @endforeach
 
-    <!-- Reply Comments -->
-@if($document->replyComments->isNotEmpty())
-    <div class="comments-box reply-comments">
-        <h3>Reply Statement:</h3>
-        @foreach($document->replyComments as $reply)
-            <div class="comment-item">
-                <strong>{{ $reply->user->name }} ({{ $reply->user->role }})</strong>
-                <p class="comment-text">{{ $reply->comment }}</p>
-                <p class="comment-time" style="font-size: 12px;">{{ $reply->created_at->diffForHumans() }}</p>
-            </div>
-        @endforeach
-    </div>
-@endif
+            {{-- Section Replies --}}
+            @foreach($document->replyComments as $reply)
+                <div class="comment-item">
+                    <div class="comment-header">
+                        <strong>{{ $reply->user->name }} ({{ $reply->user->role }})</strong>
+                        <span class="comment-time" style="font-size: 12px;">{{ $reply->created_at->diffForHumans() }}</span>
+                    </div>
+                    <p class="comment-text">{{ $reply->comment }}</p>
+                </div>
+            @endforeach
+        </div>
+    @endif
 
 
 <!-- Receiving Comment -->

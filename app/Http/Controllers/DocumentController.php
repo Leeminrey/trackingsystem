@@ -263,17 +263,18 @@ public function show($id)
 {
     // Fetch the document with its librarian comments
     $document = Document::with([
-        'sections', // Fetch related sections
+        'sections',
         'librarianComments.user' => function ($query) {
-            $query->select('id', 'name', 'role'); // Fetch librarian commenter details
+            $query->select('id', 'name', 'role');
         },
     ])->findOrFail($id);
 
-    // Pass the librarian's comments (no longer from the 'documents' table)
-    $librarianComments = $document->librarianComments; // Get the comments from the 'librarian_comments' relationship
+    // Separate comments based on reply_phase
+    $normalComments = $document->librarianComments->where('reply_phase', 0);
+    $replyComments = $document->librarianComments->where('reply_phase', 1);
 
     // Pass the data to the view
-    return view('components.document-details', compact('document', 'librarianComments'));
+    return view('components.document-details', compact('document', 'normalComments', 'replyComments'));
 }
 
     public function view($filename)
@@ -319,6 +320,7 @@ public function show($id)
             // Create the document with the user-provided locator number
             $document = Document::create([
                 'user_id' => auth()->id(),
+                'uploader_id' => auth()->id(),
                 'locator_no' => $request->locator_no, // User-entered locator number
                 'subject' => $request->subject,
                 'received_from' => $request->received_from, // Add this

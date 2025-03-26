@@ -13,6 +13,7 @@ class Document extends Model
 
     protected $fillable = [
         'user_id',
+        'uploader_id',
         'locator_no',
         'subject',
         'received_from',
@@ -23,8 +24,15 @@ class Document extends Model
         'original_file_name',
         'hashed_file_name',
         'file_path',
-        'uploaded_from'
+        'uploaded_from',
+        'is_reply'
     ];
+
+    public function uploader()
+{
+    return $this->belongsTo(User::class, 'uploader_id');
+}
+
 
     
 

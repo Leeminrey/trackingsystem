@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('document_id')->constrained('documents')->onDelete('cascade'); // Foreign key linking to documents
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade'); // Foreign key linking to users (librarians)
-            $table->text('comment'); // The actual comment text
+            $table->text('comment')->nullable(); // The actual comment text
             $table->timestamps();
         });
     }
