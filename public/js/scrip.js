@@ -139,7 +139,6 @@ $(document).ready(function() {
     const $searchInput = $('#search-input');
     const $clearButton = $('#clearButton');
     const $documentsTable = $('#documentsTable tbody');
-    // const $searchIcon = $('#search-icon');
 
     // Show the clear button when there's input
     $searchInput.on('input', function() {
@@ -147,16 +146,17 @@ $(document).ready(function() {
             $clearButton.show();
         } else {
             $clearButton.hide();
-            // Reset the table display if the input is cleared
             $documentsTable.find('tr').show();
         }
     });
 
-    // Filter table rows based on search input
+    // Filter table rows based on search input (subject + locator number)
     $searchInput.on('input', function() {
         const query = $searchInput.val().toLowerCase();
         $documentsTable.find('tr').filter(function() {
-            $(this).toggle($(this).find('td:nth-child(3)').text().toLowerCase().indexOf(query) > -1);
+            const subject = $(this).find('td:nth-child(3)').text().toLowerCase();
+            const locatorNumber = $(this).find('td:nth-child(1)').text().toLowerCase();
+            $(this).toggle(subject.includes(query) || locatorNumber.includes(query));
         });
     });
 
@@ -164,9 +164,10 @@ $(document).ready(function() {
     $clearButton.on('click', function() {
         $searchInput.val('');
         $clearButton.hide();
-        $documentsTable.find('tr').show(); // Show all rows
+        $documentsTable.find('tr').show();
     });
 });
+
 
 // PAGINATION
 

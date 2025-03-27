@@ -1,21 +1,26 @@
 @extends('layouts.app')
 
 @section('content')
+
 <div id="document-table-container">
     @include('components.breadcrumb')
+
+    <ul class="box-info">
+ 
+
     <div class="table-data">
         <div class="order">
             <div class="head">
-            <h3>Pending Documents</h3>
+                <h3>Uploaded Documents</h3>
                 <div class="search-container">
                     @include('components.datepicker')
                     <input type="text" id="search-input" placeholder="Search by subject." />
                     <button id="clearButton" style="display: none;">X</button>
                     <i class='bx bx-search' id="search-icon"></i>
                 </div>
-                <i class='bx bx-filter'></i>
             </div>
-            <table>
+
+            <table id="documentsTable">
                 <thead>
                     <tr>
                         <th>Locator No.</th>
@@ -47,7 +52,9 @@
                     @endif
                 @endforeach
                 </tbody>
+
             </table>
+
             @include('components.pagination')
         </div>
     </div>
@@ -56,4 +63,5 @@
 <div id="document-details-container" style="display: none;">
     <!-- Document details will be injected here -->
 </div>
+
 @endsection

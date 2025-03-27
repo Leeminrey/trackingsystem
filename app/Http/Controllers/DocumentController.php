@@ -624,19 +624,20 @@ public function edit($id)
 {
     $document = Document::findOrFail($id);
 
-    // Ensure the user is authorized to edit this document (optional)
-    if ($document->user_id !== auth()->user()->id) {
-        return redirect()->route('documents.index')->with('error', 'You are not authorized to edit this document.');
+    // Ensure the user is authorized to edit this document
+    if (auth()->user()->id != $document->uploader_id) {
+        return redirect()->back()->with('error', 'You are not authorized to edit this document.');
     }
 
-    return view('components.edit', compact('document'));  // Adjusted to point to 'components.edit'
+    return view('components.edit', compact('document'));
 }
+
 public function destroy($id)
 {
     $document = Document::findOrFail($id);
 
     // Ensure only the uploader can delete
-    if (auth()->user()->id !== $document->user_id) {
+    if (auth()->user()->id !== $document->uploader_id) {
         abort(403, 'Unauthorized action.');
     }
 
@@ -663,7 +664,7 @@ public function update(Request $request, $id)
     $document = Document::findOrFail($id);
 
     // Ensure only the uploader can edit
-    if (auth()->user()->id !== $document->user_id) {
+    if (auth()->user()->id !== $document->uploader_id) {
         abort(403, 'Unauthorized action.');
     }
 
@@ -671,27 +672,41 @@ public function update(Request $request, $id)
     $request->validate([
         'locator_no' => 'required|string|max:255',
         'subject' => 'required|string|max:255',
+        'received_from' => 'required|string|max:255',
         'date_received' => 'required|date',
         'details' => 'nullable|string',
         'file' => 'nullable|mimes:pdf,doc,docx,jpg,png|max:2048', // Allow different file types
     ]);
 
+    
+
     // Update document details
     $document->locator_no = $request->locator_no;
     $document->subject = $request->subject;
+    $document->received_from = $request->received_from;
     $document->date_received = $request->date_received;
     $document->details = $request->details;
 
     // Change status from "rejected" based on uploader's usertype
     if ($document->status === 'rejected') {
-        $uploader = User::find($document->user_id); // Get uploader details
+        $uploader = User::find($document->uploader_id); // Get uploader details
 
         if ($uploader && $uploader->usertype === 'section') {
             $document->status = 'checking'; // Set to "checking" for section uploads
+            $document->uploaded_from = 'outgoing';
         } elseif ($uploader && $uploader->role === 'receiving') {
             $document->status = 'pending'; // Set to "pending" for receiving uploads
+            $document->uploaded_from = 'incoming';
         }
     }
+
+    $fieldsToUpdate = ['locator_no', 'subject', 'received_from'];
+    foreach ($fieldsToUpdate as $field) {
+        if (!str_starts_with($document->$field, 'REVISE:')) {
+            $document->$field = 'REVISE: ' . $document->$field;
+        }
+    }
+    $document->save();
 
 
     // Handle file upload

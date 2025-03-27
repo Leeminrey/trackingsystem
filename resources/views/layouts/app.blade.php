@@ -115,7 +115,7 @@
 			<li data-route="notification" class="document-menu-item sub-menu-item">
 				<a href="{{ route('documents.reject') }}">
 				<i class='bx bxs-x-square'></i>
-					<span class="text">Reject</span>
+					<span class="text">Revise</span>
 				</a>
 			</li>
 

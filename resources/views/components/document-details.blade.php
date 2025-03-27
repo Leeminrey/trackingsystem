@@ -36,7 +36,7 @@
         </div>       
     </div>
 
-    @if($document->status === 'rejected' || $document->status === 'approved' || $document->status === 'pending in CL' || auth()->user()->role === 'ACL' || auth()->user()->role === 'verfier')
+    @if($document->status === 'rejected' || $document->status === 'approved' || $document->status === 'pending in CL' || auth()->user()->role === 'ACL' || auth()->user()->role === 'verfier' || $document->status === 'completed')
     <!-- Verifier Comment -->
         @if($document->verifierComments->isNotEmpty())
                 <div class="comments-box verifier-comments">
@@ -217,7 +217,7 @@
                     @method('PATCH')
                     <textarea name="comments" id="comments" rows="4" placeholder="Add your comments here..." required></textarea>
                
-                        <button type="submit" name="action" value="reject" class="btn btn-danger">Reject</button>
+                        <button type="submit" name="action" value="reject" class="btn btn-danger">Revise</button>
                         <button type="submit" name="action" value="approve" class="btn btn-success" onclick="saveSelectedSections()">Approve</button>
                   
                 </form>
@@ -227,7 +227,7 @@
     
     @if(auth()->user()->usertype === 'user' || auth()->user()->usertype === 'section')
    
-    @if($document->status === 'rejected' && auth()->user()->id === $document->user_id)
+    @if($document->status === 'rejected' && auth()->user()->id === $document->uploader_id)
         <!-- Edit button that redirects to the edit page -->
 
         <button class="btn btn-primary"class="edit-button" onclick="window.location.href='{{ route('documents.edit', $document->id) }}'">Edit</button>
@@ -241,7 +241,7 @@
             </button>
         </form>
     @endif
-    <button style="float: right;" class="back-button">Back</button> <!-- Back button -->
+    <!-- <button style="float: right;" class="back-button">Back</button> Back button -->
 
 @endif
     

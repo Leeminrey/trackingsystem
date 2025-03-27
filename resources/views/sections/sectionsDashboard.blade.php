@@ -34,7 +34,7 @@
                 <i class='bx bxs-x-circle'></i>
                 <span class="text">
                     <h3>{{ $rejectedCount }}</h3>
-                    <p>Rejected</p>
+                    <p>Revise</p>
                 </span>
             </li>
           

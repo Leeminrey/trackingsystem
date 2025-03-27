@@ -19,6 +19,11 @@
     </div>
 
     <div class="form-group">
+        <label for="subject">Received From:</label>
+        <input type="text" class="form-control" id="received_from" name="received_from" value="{{ $document->received_from }}" required>
+    </div>
+
+    <div class="form-group">
         <label for="date_received">Date Received:</label>
         <input type="date" class="form-control"  id="date_received" name="date_received" value="{{ $document->date_received }}" required>
     </div>

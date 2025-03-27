@@ -42,7 +42,7 @@
                 <i class='bx bxs-x-circle'></i>
                 <span class="text">
                     <h3>{{ $rejected }}</h3>
-                    <p>Rejected</p>
+                    <p>Revise</p>
                 </span>
             </li>
             @endif
@@ -55,10 +55,11 @@
                 <h3>Uploaded Documents</h3>
                 <div class="search-container">
                     @include('components.datepicker')
-                    <input type="text" id="search-input" placeholder="Search by subject." />
+                    <input type="text" id="search-input" placeholder="Search by Locator No. or." />
                     <button id="clearButton" style="display: none;">X</button>
                     <i class='bx bx-search' id="search-icon"></i>
                 </div>
+                <i class='bx bx-filter'></i>
             </div>
 
             <table id="documentsTable">

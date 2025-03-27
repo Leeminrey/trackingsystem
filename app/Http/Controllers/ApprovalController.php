@@ -18,15 +18,23 @@ class ApprovalController extends Controller
         // Get the logged-in user
         $user = Auth::user();
     
-        // Fetch only rejected documents submitted by the user
-        $documents = Document::where('user_id', $user->id)
-                             ->where('status', 'rejected')
-                             ->get();
+        // Fetch rejected documents that belong to the original uploader
+        $documents = Document::where(function ($query) use ($user) {
+                $query->where('uploader_id', $user->id) // For files uploaded by the user
+                      ->orWhere(function ($subQuery) use ($user) {
+                          $subQuery->where('is_reply', 1) // Check if the file was replied
+                                   ->where('status', 'rejected') // Ensure it's rejected
+                                   ->where('uploader_id', $user->id); // Return to original uploader
+                      });
+            })
+            ->where('status', 'rejected') // Only get rejected documents
+            ->get();
     
         // Return the reject component with rejected documents
         return view('dashboard', compact('documents', 'activeMenu', 'sidebarActive'))
                ->with('slot', view('components.reject', compact('documents', 'activeMenu', 'sidebarActive')));
     }
+    
     
     public function approved()
     {
