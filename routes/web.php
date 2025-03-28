@@ -40,8 +40,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/sections/dashboard', [HomeController::class, 'sectionsDashboard'])->name('sectionsDashboard');
 
    
-    
-    
+    Route::get('/session/check', function () {
+        return response()->json(['authenticated' => Auth::check()]);
+    })->name('session.check');
 
     
     // Document Management Routes

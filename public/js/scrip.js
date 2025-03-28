@@ -235,8 +235,10 @@ $(document).ready(function() {
         } else {
             full.classList.add('hidden'); // Hide full comment
             truncated.classList.remove('hidden'); // Show truncated comment
-            btnText.textContent = "See more"; // Update button text
+            btnText.textContent = "See more"; // Updwate button text
         }
+
+
     }
     
     

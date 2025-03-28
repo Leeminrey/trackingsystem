@@ -219,6 +219,8 @@
                
                         <button type="submit" name="action" value="reject" class="btn btn-danger">Revise</button>
                         <button type="submit" name="action" value="approve" class="btn btn-success" onclick="saveSelectedSections()">Approve</button>
+                        
+             
                   
                 </form>
             
@@ -407,6 +409,8 @@ function updateSelectedSectionsList() {
 
     selectedSectionsList.style.listStyleType = 'none'; // Remove default bullet points
 }
-
+function setActionType(action) {
+        document.getElementById('actionInput').value = action;
+    }
 
 </script>

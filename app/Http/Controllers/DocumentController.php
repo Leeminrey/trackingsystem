@@ -168,9 +168,11 @@ class DocumentController extends Controller
 
 public function updateStatus(Request $request, $id)
 {
+
     $document = Document::findOrFail($id);
     $action = $request->input('action');
     $currentRole = auth()->user()->role;
+    $currentUsertype = auth()->user()->usertype;
 
     // Store the librarian's comment in the LibrarianComment table
     $librarianComment = new LibrarianComment();
@@ -185,24 +187,20 @@ public function updateStatus(Request $request, $id)
             $document->status = 'pending'; // Move to ACL review
             $aclUserId = $this->getAclUserId(); // Get ACL user ID
             $this->notificationController->createNotification($aclUserId, $document->id, "The Verifier sent you a file {$document->original_file_name}. ");
-            
-           
         } elseif ($action === 'reject') {
             $document->status = 'rejected'; // Send back to the uploader
             $uploaderId = $document->user_id;
-            $this->notificationController->createNotification($uploaderId, $document->id, "The file {$document->original_file_name} you uploaded has been rejected by the Verifier.");
-            
-            
+            $this->notificationController->createNotification($uploaderId, $document->id, "The file {$document->original_file_name} you uploaded has been rejected by the Verifier and needs revision.");
         }
     } elseif ($currentRole === 'ACL') {
         if ($action === 'approve') {
             $document->status = 'pending in CL';
             $clUserId = $this->getClUserId();
-            $this->notificationController->createNotification($clUserId, $document->id, "The Asst. City Librarian forwarded a file {$document->original_file_name} for another evaluation.");
+            $this->notificationController->createNotification($clUserId, $document->id, "The Asst. City Librarian sent a file {$document->original_file_name}.");
         } elseif ($action === 'reject') {
             $document->status = 'rejected';
             $uploaderId = $document->user_id;
-            $this->notificationController->createNotification($uploaderId, $document->id, "The file {$document->original_file_name} you uploaded has been rejected by the Asst. City Librarian.");
+            $this->notificationController->createNotification($uploaderId, $document->id, "The file {$document->original_file_name} you uploaded has been rejected by the Asst. City Librarian and needs revision.");
         }
     } elseif ($currentRole === 'CL') {
         if ($action === 'approve') {
@@ -232,13 +230,17 @@ public function updateStatus(Request $request, $id)
         } elseif ($action === 'reject') {
             $document->status = 'rejected';
             $uploaderId = $document->user_id;
-            $this->notificationController->createNotification($uploaderId, $document->id, "The file {$document->original_file_name} you uploaded has been rejected by the City Librarian.");
+            $this->notificationController->createNotification($uploaderId, $document->id, "The file {$document->original_file_name} you uploaded has been rejected by the City Librarian and needs revision.");
         }
     }
+    
+    
+
     $document->save();
     
     return redirect()->route('documents.incoming')->with('success', 'Document status updated successfully.');
 }
+
 
 
 
@@ -349,7 +351,7 @@ public function show($id)
                 $this->notificationController->createNotification(
                     $verifierUserId, 
                     $document->id, 
-                    "The " . auth()->user()->role . " just uploaded a file $originalFileName. The file is now in checking."
+                    "The " . auth()->user()->role . " just uploaded a file $originalFileName."
                 );
             } elseif ($uploadedFrom === 'incoming') {
                 $getAclUserId = $this->getAclUserId();
@@ -556,6 +558,10 @@ private function getClUserId()
 {
     return User::where('role', 'CL')->first()->id;
 }
+// private function getUploaderId()
+// {
+//      return $document->user_id;
+// }
 
 public function forwardDocumentToSections(Request $request, $documentId)
 {
@@ -697,6 +703,7 @@ public function update(Request $request, $id)
         } elseif ($uploader && $uploader->role === 'receiving') {
             $document->status = 'pending'; // Set to "pending" for receiving uploads
             $document->uploaded_from = 'incoming';
+            $document->is_reply = 0;
         }
     }
 
