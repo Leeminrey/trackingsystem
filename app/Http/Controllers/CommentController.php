@@ -12,48 +12,6 @@ use App\Models\LibrarianComment;
 class CommentController extends Controller
 {
 
-    // public function store(Request $request, $documentId)
-    // {
-    //     $request->validate([
-    //         'comments' => 'required|string|max:500',
-    //     ]);
-    
-    //     $document = Document::findOrFail($documentId);
-    
-    //     // Prevent uploader from marking their own document as accomplished
-    //     if ($document->uploader_id == auth()->user()->id) {
-    //         return redirect()->back()->with('error', "You cannot mark your own document as accomplished.");
-    //     }
-    
-    //     // Check if the user has already commented and marked as accomplished
-    //     $existingComment = Comment::where('document_id', $document->id)
-    //                               ->where('commenter_id', auth()->user()->id)
-    //                               ->first();
-    
-    //     if ($existingComment) {
-    //         $existingComment->comments = $request->comments;
-    //         $existingComment->accomplish_status = 1;
-    //         $existingComment->save();
-    //     } else {
-    //         Comment::create([
-    //             'document_id'       => $document->id,
-    //             'commenter_id'      => auth()->user()->id,
-    //             'comments'          => $request->comments,
-    //             'accomplish_status' => 1,
-    //         ]);
-    //     }
-    
-    //     // Update status to "completed" if at least one section has marked it as accomplished
-    //     if ($this->anySectionAccomplished($document)) {
-    //         $document->update(['status' => 'completed']);
-    //     }
-    
-    //     // Get accomplishment status message for display (e.g., "Accomplished (1/2)")
-    //     $accomplishmentStatus = $this->updateDocumentAccomplishStatus($document);
-    
-    //     return redirect()->back()->with('success', "Comment added successfully. {$accomplishmentStatus}");
-    // }
-
     public function store(Request $request, $documentId)
     {
         $request->validate([
@@ -141,28 +99,37 @@ class CommentController extends Controller
     
 
     protected function anySectionAccomplished(Document $document)
-    {
-        $accomplishedCount = $document->comments()
-                                      ->where('accomplish_status', 1)
-                                      ->distinct()
-                                      ->count('commenter_id');
-    
-        return $accomplishedCount >= 1;
+{
+    // Check if at least one section has marked the document as "completed"
+    return $document->documentSections()
+                    ->where('status', 'completed')
+                    ->exists();
+}
+
+/**
+ * Returns a status message showing the accomplished count over total sections.
+ */
+protected function updateDocumentAccomplishStatus(Document $document)
+{
+    // Get total number of assigned sections
+    $sectionsCount = $document->sections()->count();
+
+    // Count how many sections have accomplished it
+    $accomplishedCount = $document->comments()
+                                  ->where('accomplish_status', 1) // Only count completed ones
+                                  ->distinct()
+                                  ->count('commenter_id');
+
+    // Update document status in the "documents" table only when all sections have completed it
+    if ($accomplishedCount === $sectionsCount && $sectionsCount > 0) {
+        $document->update(['status' => 'completed']);
     }
+
+    // Return progress status
+    return "Accomplished ({$accomplishedCount}/{$sectionsCount})";
+}
     
-    /**
-     * Returns a status message showing the accomplished count over total sections.
-     */
-    protected function updateDocumentAccomplishStatus(Document $document)
-    {
-        $sectionsCount = $document->sections()->count();
-        $accomplishedCount = $document->comments()
-                                      ->where('accomplish_status', 1)
-                                      ->distinct()
-                                      ->count('commenter_id');
     
-        return "Accomplished ({$accomplishedCount}/{$sectionsCount})";
-    }
 
 
 }

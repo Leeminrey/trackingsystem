@@ -240,7 +240,21 @@ $(document).ready(function() {
 
 
     }
-    
-    
+    function confirmReject() {
+        let modal = document.getElementById("customModal");
+        modal.style.display = "block";  
 
-    
+        document.getElementById("confirmBtn").addEventListener("click", function() {
+            let form = document.getElementById("approvalForm");
+            let input = document.createElement("input");
+            input.type = "hidden";
+            input.name = "action";
+            input.value = "reject";
+            form.appendChild(input);
+            form.submit();
+        });
+
+        document.getElementById("cancelBtn").addEventListener("click", function() {
+            modal.style.display = "none"; // Close modal
+        });
+    }

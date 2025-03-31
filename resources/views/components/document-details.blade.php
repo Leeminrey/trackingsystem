@@ -36,7 +36,7 @@
         </div>       
     </div>
 
-    @if($document->status === 'rejected' || $document->status === 'approved' || $document->status === 'pending in CL' || auth()->user()->role === 'ACL' || auth()->user()->role === 'verfier' || $document->status === 'completed')
+    @if($document->status === 'rejected' || $document->status === 'approved' || $document->status === 'pending in CL' || auth()->user()->role === 'ACL' || auth()->user()->role === 'verfier')
     <!-- Verifier Comment -->
         @if($document->verifierComments->isNotEmpty())
                 <div class="comments-box verifier-comments">
@@ -71,12 +71,24 @@
         @endif
 
         @if($document->librarianComments->contains('reply_phase', 1) || $document->replyComments->isNotEmpty())
-        <div class="comments-box reply-comments">
-            <h3>Reply Statement:</h3>
-            
-            {{-- Librarian Replies --}}
-            @foreach($document->librarianComments as $reply)
-                @if($reply->reply_phase == 1)
+            <div class="comments-box reply-comments">
+                <h3>Reply Statement:</h3>
+                
+                {{-- Librarian Replies --}}
+                @foreach($document->librarianComments as $reply)
+                    @if($reply->reply_phase == 1 )
+                        <div class="comment-item">
+                            <div class="comment-header">
+                                <strong>{{ $reply->user->name }} ({{ $reply->user->role }})</strong>
+                                <span class="comment-time" style="font-size: 12px;">{{ $reply->created_at->diffForHumans() }}</span>
+                            </div>
+                            <p class="comment-text">{{ $reply->comment }}</p>
+                        </div>
+                    @endif
+                @endforeach
+
+                {{-- Section Replies --}}
+                @foreach($document->replyComments as $reply)
                     <div class="comment-item">
                         <div class="comment-header">
                             <strong>{{ $reply->user->name }} ({{ $reply->user->role }})</strong>
@@ -84,21 +96,9 @@
                         </div>
                         <p class="comment-text">{{ $reply->comment }}</p>
                     </div>
-                @endif
-            @endforeach
-
-            {{-- Section Replies --}}
-            @foreach($document->replyComments as $reply)
-                <div class="comment-item">
-                    <div class="comment-header">
-                        <strong>{{ $reply->user->name }} ({{ $reply->user->role }})</strong>
-                        <span class="comment-time" style="font-size: 12px;">{{ $reply->created_at->diffForHumans() }}</span>
-                    </div>
-                    <p class="comment-text">{{ $reply->comment }}</p>
-                </div>
-            @endforeach
-        </div>
-    @endif
+                @endforeach
+            </div>
+        @endif
 
 
 <!-- Receiving Comment -->
@@ -154,31 +154,38 @@
 @endif
 
 
-    @if(auth()->user()->usertype === 'section' || auth()->user()->role === 'receiving')
-        @if(auth()->user()->id !== $document->user_id)
+ @if(auth()->user()->usertype === 'section' || auth()->user()->role === 'receiving')
+    @if(auth()->user()->id !== $document->user_id)
         <div class="approval-section">
-                <h3 style="font-size: 20px;">Comments</h3>
-                <form id="commentForm" action="{{ route('comments.store', $document->id) }}" method="POST">
-                    @csrf
-                    <textarea name="comments" id="comments" rows="4" placeholder="Add your comments here..." required></textarea>
-                    
-                    <input type="hidden" name="action_type" id="action_type" value="accomplish">
+            <h3 style="font-size: 20px;">Comments</h3>
+            <form id="commentForm" action="{{ route('comments.store', $document->id) }}" method="POST">
+                @csrf
+                <textarea name="comments" id="comments" rows="4" placeholder="Add your comments here..." required
+                @if($userAccomplished) disabled style="cursor: not-allowed;" @endif></textarea>
+                
+                <input type="hidden" name="action_type" id="action_type" value="accomplish">
 
-                    <!-- Buttons for Accomplish and Reply -->
-                    <button type="submit" class="btn-primary" onclick="setActionType('accomplish')">Accomplish</button>
-                    @if(auth()->user()->usertype === 'section')
-                    <button type="submit" class="btn-secondary" onclick="setActionType('reply')">Reply</button>
-                    @endif
-                </form>
-            </div>
+                <!-- Buttons for Accomplish and Reply -->
+                <button type="submit" class="btn-primary" onclick="setActionType('accomplish')" 
+                    @if($userAccomplished) disabled style="cursor: not-allowed;" @endif>
+                    Accomplish
+                </button>
+                @if(auth()->user()->usertype === 'section')
+                    <button type="submit" class="btn-secondary" onclick="setActionType('reply')"
+                        @if($userAccomplished) disabled style="cursor: not-allowed;" @endif>
+                        Reply</button>
+                @endif
+            </form>
+        </div>
 
-            <script>
-                function setActionType(type) {
-                    document.getElementById('action_type').value = type;
-                }
-            </script>
-        @endif
+        <script>
+            function setActionType(type) {
+                document.getElementById('action_type').value = type;
+            }
+        </script>
     @endif
+@endif
+
 
 
 
@@ -208,41 +215,47 @@
     @endif
     
     @if(auth()->user()->usertype === 'boss' || auth()->user()->role === 'verifier')
-         <!-- COMMENT SECTION FOR LIBRARIANS -->
+        <!-- COMMENT SECTION FOR LIBRARIANS -->
         <div class="approval-section">
-            
-                <h3 style="font-size: 20px;">Comments</h3>
-                <form action="{{ route('documents.updateStatus', $document->id) }}" method="POST">
-                    @csrf
-                    @method('PATCH')
-                    <textarea name="comments" id="comments" rows="4" placeholder="Add your comments here..." required></textarea>
-               
-                        <button type="submit" name="action" value="reject" class="btn btn-danger">Revise</button>
-                        <button type="submit" name="action" value="approve" class="btn btn-success" onclick="saveSelectedSections()">Approve</button>
-                        
-             
-                  
-                </form>
-            
+            <h3 style="font-size: 20px;">Comments</h3>
+            <form id="approvalForm" action="{{ route('documents.updateStatus', $document->id) }}" method="POST">
+                @csrf
+                @method('PATCH')
+                <textarea name="comments" id="comments" rows="4" placeholder="Add your comments here..." required></textarea>
+
+                <button type="button" class="btn btn-danger" onclick="confirmReject()">Revise</button>
+                <button type="submit" name="action" value="approve" class="btn btn-success" onclick="saveSelectedSections()">Approve</button>
+            </form>
         </div>
+
+        @include('components.pop-up')
+
     @endif
-    
+
     @if(auth()->user()->usertype === 'user' || auth()->user()->usertype === 'section')
    
-    @if($document->status === 'rejected' && auth()->user()->id === $document->uploader_id)
-        <!-- Edit button that redirects to the edit page -->
+        @if($document->status === 'rejected' && auth()->user()->id === $document->uploader_id)
+            <!-- Edit button that redirects to the edit page -->
+            <button class="btn btn-primary" onclick="window.location.href='{{ route('documents.edit', $document->id) }}'">Edit</button>
 
-        <button class="btn btn-primary"class="edit-button" onclick="window.location.href='{{ route('documents.edit', $document->id) }}'">Edit</button>
+            <!-- Delete button that triggers the modal -->
+            <button type="button" class="btn btn-danger" onclick="showDeleteModal()">Delete</button>
 
-        <!-- Delete button -->
-        <form action="{{ route('documents.destroy', $document->id) }}" method="POST" style="display: inline;">
-            @csrf
-            @method('DELETE')
-            <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this document?');">
-                Delete
-            </button>
-        </form>
-    @endif
+            <!-- Custom Pop-up Modal -->
+            @include('components.pop-up-delete')
+        
+            <script>
+               function showDeleteModal() {
+                    document.getElementById("customModal").style.display = "block";
+                }
+
+                document.getElementById("cancelBtn").addEventListener("click", function() {
+                    document.getElementById("customModal").style.display = "none";
+                });
+           </script>
+
+        @endif
+
     <!-- <button style="float: right;" class="back-button">Back</button> Back button -->
 
 @endif
@@ -280,6 +293,8 @@ function openFileModal(fileUrl, originalFileName) {
 
     sidebar.classList.add('dimmed');
 }
+
+
 
 
 function closeFileModal() {
@@ -412,5 +427,7 @@ function updateSelectedSectionsList() {
 function setActionType(action) {
         document.getElementById('actionInput').value = action;
     }
+
+   
 
 </script>

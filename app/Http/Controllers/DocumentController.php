@@ -269,15 +269,23 @@ public function show($id)
         'librarianComments.user' => function ($query) {
             $query->select('id', 'name', 'role');
         },
+        'comments' // Fetch all comments including accomplishment status
     ])->findOrFail($id);
+
+    // Check if the logged-in user has already accomplished the document
+    $userAccomplished = $document->comments()
+        ->where('commenter_id', auth()->id())
+        ->where('accomplish_status', 1)
+        ->exists();
 
     // Separate comments based on reply_phase
     $normalComments = $document->librarianComments->where('reply_phase', 0);
     $replyComments = $document->librarianComments->where('reply_phase', 1);
 
     // Pass the data to the view
-    return view('components.document-details', compact('document', 'normalComments', 'replyComments'));
+    return view('components.document-details', compact('document', 'normalComments', 'replyComments', 'userAccomplished'));
 }
+
 
     public function view($filename)
 {

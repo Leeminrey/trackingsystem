@@ -6,6 +6,25 @@
 	box-sizing: border-box;
 }
 
+
+/*REVISE BUTTON*/
+@keyframes popIn {
+	0% { transform: translate(-50%, -50%) scale(0.8); opacity: 0.8; }
+	50% { transform: translate(-50%, -50%) scale(1.1); }
+	100% { transform: translate(-50%, -50%) scale(1); }
+}
+@keyframes zoomBounce {
+	0% { transform: translate(-50%, -50%) scale(0.8); opacity: 0.8; }
+	50% { transform: translate(-50%, -50%) scale(1.1); }
+	100% { transform: translate(-50%, -50%) scale(1); }
+}
+#customModal {
+    animation: zoomBounce 0.4s ease-out;
+}
+
+/*REVISE BUTTON*/
+    
+
 /*NAV BAR*/
 
 .user-name{
