@@ -70,7 +70,7 @@
             </div>
         @endif
 
-        @if($document->librarianComments->contains('reply_phase', 1) || $document->replyComments->isNotEmpty())
+        @if($document->librarianComments->contains('reply_phase', 1) || $document->replyComments->isNotEmpty() )
             <div class="comments-box reply-comments">
                 <h3>Reply Statement:</h3>
                 
