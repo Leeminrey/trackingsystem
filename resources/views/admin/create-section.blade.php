@@ -79,11 +79,15 @@
 
                 <!-- Actions: Select, Delete -->
                 <div class="section-actions mb-3" style="margin-left: 10px;">
-                        <button id="select-btn" class="btn btn-warning">Select</button>
-                        <button id="delete-btn" class="btn btn-danger" style="display: none;">Delete Selected</button>
-                        <button id="select-all-btn" class="btn btn-warning" style="display: none;">Select All</button>
-                        <button id="unselect-all-btn" class="btn btn-warning" style="display: none;">Unselect All</button>
+                    <button id="select-btn" class="btn btn-warning">Select</button>
+                    <button id="delete-btn" class="btn btn-danger" style="display: none;">Delete Selected</button>
+                    <button id="select-all-btn" class="btn btn-warning" style="display: none;">Select All</button>
+                    <button id="unselect-all-btn" class="btn btn-warning" style="display: none;">Unselect All</button>
                 </div>
+
+                <!-- Custom Pop-up Modal -->
+                @include('components.pop-up-delete-admin')
+
         </div>
     </div>
 </div>
@@ -96,7 +100,10 @@ document.addEventListener('DOMContentLoaded', function () {
     const selectAllBtn = document.getElementById('select-all-btn');
     const unselectAllBtn = document.getElementById('unselect-all-btn');
     const sectionCheckboxes = document.querySelectorAll('.section-checkbox');
-
+    const confirmationModal = document.getElementById('confirmation-modal');
+    const cancelDeleteBtn = document.getElementById('cancel-delete');
+    const confirmDeleteBtn = document.getElementById('confirm-delete');
+    
     let selecting = false;  // Track whether we are in select mode
 
     selectBtn.addEventListener('click', function () {
@@ -105,34 +112,46 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     deleteBtn.addEventListener('click', function () {
-    const selectedSections = Array.from(sectionCheckboxes).filter(checkbox => checkbox.checked);
-    const idsToDelete = selectedSections.map(checkbox => checkbox.dataset.id);
+        const selectedSections = Array.from(sectionCheckboxes).filter(checkbox => checkbox.checked);
+        const idsToDelete = selectedSections.map(checkbox => checkbox.dataset.id);
 
         if (idsToDelete.length > 0) {
-            fetch('/admin/sections/delete', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-                },
-                body: JSON.stringify({ ids: idsToDelete })
-            })
-            .then(response => {
-                if (response.ok) {
-                    // Refresh the page to reflect changes and show success message
-                    window.location.reload();
-                } else {
-                    console.error('Failed to delete sections.');
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-            });
+            // Show the confirmation modal before deleting
+            confirmationModal.style.display = 'block';
+
+            // Confirm the delete action
+            confirmDeleteBtn.onclick = function () {
+                // Proceed with deletion
+                fetch('/admin/sections/delete', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                    },
+                    body: JSON.stringify({ ids: idsToDelete })
+                })
+                .then(response => {
+                    if (response.ok) {
+                        // Refresh the page to reflect changes and show success message
+                        window.location.reload();
+                    } else {
+                        console.error('Failed to delete sections.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+
+                // Close the modal after confirming delete
+                confirmationModal.style.display = 'none';
+            };
         }
     });
 
-
-
+    // Cancel the delete action and close the modal
+    cancelDeleteBtn.addEventListener('click', function () {
+        confirmationModal.style.display = 'none';
+    });
 
     selectAllBtn.addEventListener('click', function () {
         sectionCheckboxes.forEach(checkbox => checkbox.checked = true); // Select all checkboxes
@@ -176,5 +195,6 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     };
 });
+
 </script>
 @endsection

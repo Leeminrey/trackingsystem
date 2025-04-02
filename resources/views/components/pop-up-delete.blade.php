@@ -8,8 +8,11 @@
         @csrf
         @method('DELETE')
         <button type="submit" id="confirmBtn" style="background: red; color: white; padding: 10px; border: none; cursor: pointer; margin-right: 10px;
-            border-radius: 5px; font-size: 14px;">Okay</button>
+            border-radius: 5px; font-size: 14px;">OKAY</button>
         <button type="button" id="cancelBtn" style="background: gray; color: white; padding: 10px; border: none; cursor: pointer; 
-            border-radius: 5px; font-size: 14px;">Cancel</button>
+            border-radius: 5px; font-size: 14px;">CANCEL</button>
     </form>
 </div>
+
+
+
