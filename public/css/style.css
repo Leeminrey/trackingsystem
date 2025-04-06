@@ -1,0 +1,1787 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Poppins:wght@400;500;600;700&display=swap');
+
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+
+/*REVISE BUTTON*/
+@keyframes popIn {
+	0% { transform: translate(-50%, -50%) scale(0.8); opacity: 0.8; }
+	50% { transform: translate(-50%, -50%) scale(1.1); }
+	100% { transform: translate(-50%, -50%) scale(1); }
+}
+@keyframes zoomBounce {
+	0% { transform: translate(-50%, -50%) scale(0.8); opacity: 0.8; }
+	50% { transform: translate(-50%, -50%) scale(1.1); }
+	100% { transform: translate(-50%, -50%) scale(1); }
+}
+#customModal {
+    animation: zoomBounce 0.4s ease-out;
+}
+
+/*REVISE BUTTON*/
+    
+
+/*NAV BAR*/
+
+.user-name{
+	font-size: 14px; 
+	font-family: poppins;
+	color: #828388; 
+}
+.qcpl
+{
+	font-size: 14px; 
+	font-family: poppins;
+	color: #0A0A0A; 
+}
+
+/* END OF NAV BAR*/
+
+/* STATUS */
+
+.status-approved {
+    background-color: green; /* Background color for approved status */
+    color: white; /* Text color for readability */
+    padding: 5px 10px; /* Optional: add some padding */
+    border-radius: 5px; /* Optional: rounded corners */
+}
+
+
+.status-rejected {
+    background-color: red; /* Background color for rejected status */
+    color: white; /* Text color for readability */
+    padding: 5px 10px; /* Optional: add some padding */
+    border-radius: 5px; /* Optional: rounded corners */
+}
+
+.status-pending {
+    background-color: #FF8C00; /* Background color for pending status */
+    color: white; /* Text color for readability */
+    padding: 5px 10px; /* Optional: add some padding */
+    border-radius: 5px; /* Optional: rounded corners */
+}
+.status-checking {
+    background-color: #c5c5c5; /* Background color for pending status */
+    color: white; /* Text color for readability */
+    padding: 5px 10px; /* Optional: add some padding */
+    border-radius: 5px; /* Optional: rounded corners */
+}
+.status-completed {
+    background-color:#007bff; /* Background color for approved status */
+    color: white; /* Text color for readability */
+    padding: 5px 10px; /* Optional: add some padding */
+    border-radius: 5px; /* Optional: rounded corners */
+}
+
+
+
+/* END STATUS*/
+
+/* STYLING MODAL */
+
+/* Modal Styles */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 2000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.8);
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 2% auto;
+    padding: 10px;
+    border: 1px solid #888;
+    width: 85%;
+}
+
+.sidebar.dimmed {
+    opacity: 0.5;
+    pointer-events: none;
+}
+
+.sidebar, .nav {
+    z-index: 1000;
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover, .close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.view-file-label {
+    display: block;
+    margin: 15px 0 5px;
+    font-weight: bold;
+}
+
+.file-preview {
+    display: flex;
+    align-items: center;
+    border: 2px solid #ccc;
+    border-radius: 4px;
+    padding: 10px;
+    margin-bottom: 20px;
+    cursor: pointer;
+    background-color: #f9f9f9;
+    transition: background-color 0.3s;
+}
+
+/* Update the height of the section-list */
+.section-list {
+    margin: 15px 0;
+    overflow-y: auto; /* Ensure scrolling for overflow */
+}
+
+.section-item {
+   padding: 10px;
+}
+
+
+#selectedSectionsContainer {
+    margin-top: 15px;
+}
+
+/* Updated styles for the selected sections list */
+#selectedSectionsList {
+    display: flex;
+    flex-wrap: wrap;
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+#selectedSectionsList li {
+    width: calc(50% - 10px);
+    margin-bottom: 10px;
+    padding-left: 10px;
+    box-sizing: border-box;
+}
+
+
+/* END OF STYLING MODAL */
+
+
+/* DOCUMENT CONTAINER DETAILS*/
+
+.document-details {
+    background-color: #f9f9f9; /* Light background color */
+    border: 1px solid #ddd; /* Light gray border */
+    border-radius: 5px; /* Rounded corners */
+    padding: 20px; /* Padding inside the box */
+    margin: 20px 0; /* Margin around the box */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Slight shadow effect */
+}
+
+.document-details h3 {
+    color: #333; /* Darker color for the title */
+    margin-bottom: 15px; /* Space below the title */
+    font-size: 35px;
+}
+
+.document-info {
+    display: flex; /* Use flexbox for two columns */
+    justify-content: space-between; /* Space between columns */
+}
+
+.left-column, .right-column {
+    width: 48%; /* Adjust width for columns */
+}
+
+.document-details p {
+    font-size: 16px; /* Font size for text */
+    line-height: 1.5; /* Line height for better readability */
+    color: #363636; /* Slightly lighter gray for the text */
+    margin: 8px 0; /* Space between paragraphs */
+}
+
+.document-details strong {
+    color: #000000; /* Darker color for labels */
+}
+
+.details-box, .comment-box {
+    background-color: #e9ecef; /* Light gray for the boxes */
+    border: 1px solid #ccc; /* Light border */
+    border-radius: 5px; /* Rounded corners */
+    padding: 10px; /* Padding inside the boxes */
+    margin: 10px 0; /* Space around the boxes */
+}
+
+.back-button {
+    background-color: #007bff; /* Primary button color */
+    color: white; /* Text color */
+    border: none; /* No border */
+    border-radius: 5px; /* Rounded corners */
+    padding: 10px 25px; /* Padding */
+    cursor: pointer; /* Pointer cursor on hover */
+    transition: background-color 0.3s; /* Smooth transition for hover effect */
+	font-size: 15px;
+}
+
+.back-button:hover {
+    background-color: #0056b3; /* Darker shade on hover */
+}
+
+.form-group input[type="file"] {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border: 2px solid #ccc;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    cursor: pointer;
+    transition: border-color 0.3s ease;
+}
+
+/* File input hover effect */
+.form-group input[type="file"]:hover {
+    border-color: #007bff;
+}
+
+/* File input focus effect */
+.form-group input[type="file"]:focus {
+    outline: none;
+    border-color: #0056b3;
+}
+
+
+/* END OF DOCUMENT CONTAINER DETAILS*/
+
+/* EDIT BUTTON (EDIT.BLADE) */
+
+.edit-container {
+	max-width: 800px;
+	margin: 20px auto;
+	background: #fff;
+	padding: 20px;
+	border-radius: 8px;
+	box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+.form-group {
+	margin-bottom: 15px;
+}
+label {
+	font-weight: bold;
+}
+input, textarea {
+
+	padding: 8px;
+	border: 1px solid #ccc;
+	border-radius: 4px;
+}
+.file-upload {
+	padding: 10px;
+	border: 1px dashed #007bff;
+	text-align: center;
+	cursor: pointer;
+	background: #f8f9fa;
+}
+.btn-save {
+	background: #28a745;
+	color: white;
+	padding: 10px 15px;
+	border: none;
+	border-radius: 5px;
+	cursor: pointer;
+}
+.btn-cancel {
+	background: #dc3545;
+	color: white;
+	padding: 10px 15px;
+	border: none;
+	border-radius: 5px;
+	cursor: pointer;
+}
+/* END OF EDIT BUTTON (EDIT.BLADE) */
+
+
+.document-menu-item {
+    transition: margin-left 0.3s; /* Smooth transition */
+}
+
+
+
+/* SEARCH BAR*/
+
+.search-container {
+    display: flex;
+    align-items: center;
+}
+
+#search-input {
+    border-radius: 25px 0 0 25px;
+    border: 1px solid #ccc;
+    padding: 5px 10px;
+	height: 40px;
+	width: 250px; /* Adjust width as needed */
+	outline: none; /* Remove outline */
+}
+
+#search-input:focus {
+ 
+    border-color: #007bff; /* Change to your preferred focus color */
+}
+
+.bx-search{
+    padding: 11px;
+    cursor: pointer;
+    border-radius: 0 25px 25px 0; /* Round the icon */
+    background: #007bff; /* Button color */
+    color: white;
+    border: 1px solid #007bff; /* Match the button border with the background */
+    border-left: none; /* Remove left border to connect with input */
+	
+}
+
+#clearButton {
+	background: transparent; /* No background */
+    border: none; /* No border */
+    cursor: pointer; /* Pointer cursor */
+    color: #00559A; /* Color of the X button */
+    font-size: 10px; /* Adjust size as needed */
+    position:relative; /* Positioning */
+    right: 20px; /* Aligns it to the right inside the input */
+    top: 5px; /* Centers vertically */
+    transform: translateY(-50%); /* Adjust for exact centering */
+    font-weight: 900;
+}
+
+/* APPROVAL BUTTONS */
+
+.approval-section {
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    padding: 20px;
+    margin-top: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+	margin-bottom: 20px;
+}
+
+.approval-section h3 {
+    font-size: 24px;
+    color: #333;
+    margin-bottom: 15px;
+}
+
+.approval-section textarea {
+    width: 100%;
+    padding: 10px;
+    font-size: 14px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    margin-bottom: 15px;
+    resize: none;
+    outline: none;
+}
+
+.approval-section textarea:focus {
+    border-color: #80bdff;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.25);
+}
+
+.approval-section button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    margin-right: 10px;
+    transition: background-color 0.3s ease;
+}
+
+.btn-success {
+    background-color: #28a745;
+    color: white;
+}
+
+.btn-success:hover {
+    background-color: #218838;
+}
+
+.btn-danger {
+    background-color: #dc3545;
+    color: white;
+}
+
+.btn-danger:hover {
+    background-color: #c82333;
+}
+
+
+
+/* END OF APPROVAL BUTTONS*/
+
+/* ROW DESIGN*/
+
+/* Style for approved rows */
+.approved-row {
+    background-color: #d4edda; /* Light green */
+    color: #155724; /* Dark green text */
+}
+
+/* Style for rejected rows */
+.rejected-row {
+    background-color: #f8d7da; /* Light red */
+    color: #721c24; /* Dark red text */
+}
+
+/* Style for pending rows (no change to background color) */
+.pending-row {
+    background-color: #FDFD96; /* Default white */
+    color: #000000; /* Black text */
+}
+
+
+/* Optional: add hover effect for better UX */
+tr:hover {
+    background-color: #f1f1f1; /* Light grey hover */
+}
+
+.pending-CL-row {
+    background-color: #FDFD96; /* Default white */
+    color: #000000; /* Black text */
+}
+
+
+/* END ROW DESIGN*/
+
+/*PAGE DESIGN*/
+
+.pagination {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	margin-top: 20px;
+}
+
+.pagination button {
+	margin: 0 5px;
+	padding: 5px 10px;
+	background-color: #007bff;
+	color: white;
+	border: none;
+	cursor: pointer;
+	border-radius: 5px;
+}
+
+.pagination button:disabled {
+	background-color: #cccccc;
+	cursor: not-allowed;
+}
+
+.pagination span {
+	margin: 0 10px;
+}
+
+/*END PAGE DESIGN*/
+
+
+
+/*CREATE SECTION*/
+.custom-error
+{
+	color: red; /* You can choose any color here */
+    font-weight: bold; /* Optional: to make the text bold */
+    background-color: #f8d7da; /* Optional: Add background color if you want */
+    padding: 10px; /* Optional: Add padding for better spacing */
+    border-radius: 5px; /* Optional: Add rounded corners */
+}
+
+.custom-success {
+    color: green; /* Text color */
+    background-color: #d4edda; /* Background color */
+    border: 1px solid green; /* Optional border */
+    padding: 10px; /* Add padding for spacing */
+    border-radius: 5px; /* Optional: Rounded corners */
+    font-weight: bold; /* Optional: Make the text bold */
+}
+
+.section-actions {
+    display: block; /* Remove flex */
+    margin-bottom: 20px; /* Space below the action buttons */
+    padding: 10px; /* Add some padding for breathing space */
+}
+
+.btn {
+    width: 150px; /* Set a fixed width for all buttons */
+    padding: 10px; /* Padding for button height */
+    font-size: 16px; /* Font size for buttons */
+    transition: background-color 0.3s; /* Smooth background color transition */
+    text-align: center; /* Center button text */
+    margin-right: 5px; /* Space between buttons */
+}
+
+/* Specific styles for button colors */
+.btn-warning {
+    background-color: #ff9800; /* Orange color for Select button */
+    border-color: #ff9800; /* Border matches background */
+}
+
+.btn-warning:hover {
+    background-color: #f57c00; /* Darken on hover */
+}
+
+.btn-info {
+    background-color: #2196f3; /* Blue color for Edit button */
+    border-color: #2196f3; /* Border matches background */
+}
+
+.btn-info:hover {
+    background-color: #1976d2; /* Darken on hover */
+}
+
+.btn-danger {
+    background-color: #dc3545; /* Bootstrap danger color */
+    border-color: #dc3545; /* Border matches background */
+}
+
+.btn-danger:hover {
+    background-color: #c82333; /* Darken on hover */
+}
+
+
+    /* Card Styles */
+.card {
+    margin-bottom: 20px; /* Space between cards */
+    border: 3px solid #dee2e6; /* Card border */
+    border-radius: 0.25rem; /* Rounded corners */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+}
+
+
+.container-section {
+    max-width: 100%; /* Allow full width */
+    margin: 20px; /* Set margin to create space around the container */
+    padding: 20px; /* Optional: Add padding inside the container */
+    background-color: white; /* Optional: Set a white background for the container */
+    border-radius: 5px; /* Optional: Add rounded corners to the container */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Optional: Add shadow for depth */
+}
+
+.card {
+    margin-bottom: 20px; /* Space between cards */
+}
+
+.section-actions {
+    margin-bottom: 20px; /* Space below action buttons */
+}
+
+.list-group-item {
+    margin-bottom: 10px; /* Space between list items */
+}
+
+.empty-item {
+    height: 40px; /* Adjust height for empty list items to keep alignment */
+}
+
+.card-header {
+     /* Header background color */
+    color: #000000; /* Header text color */
+    padding: 15px; /* Padding for header */
+    font-weight: bold; /* Bold text for header */
+
+}
+
+.card-body {
+    padding: 20px; /* Padding for card body */
+}
+
+/* Form Styles */
+.form-group {
+    margin-bottom: 15px; /* Space between form elements */
+}
+
+label {
+    font-weight: bold; /* Bold label text */
+}
+
+.btn {
+    margin-right: 10px; /* Space between buttons */
+}
+
+/* Section List Styles */
+.section-list-left,
+.section-list-right {
+    padding: 0; /* Remove default padding */
+}
+
+.list-group-item {
+    border: 1px solid #dee2e6; /* Border for each list item */
+    margin-bottom: 5px; /* Space between list items */
+    padding: 10px; /* Padding for list items */
+    background-color: #fff; /* Background color for items */
+    border-radius: 0.25rem; /* Rounded corners for items */
+    transition: background-color 0.3s; /* Transition effect on hover */
+}
+
+.list-group-item:hover {
+    background-color: #f1f1f1; /* Light hover effect */
+}
+
+/* Empty Item Styles */
+.empty-item {
+    height: 50px; /* Fixed height for empty items */
+    background-color: transparent; /* Transparent background */
+}
+
+/* Checkbox styles */
+
+
+.row2 {
+    display: flex;                /* Use flexbox layout */
+    flex-wrap: wrap;            /* Allow items to wrap to the next line */
+    gap: 20px;                   /* Space between items */
+}
+
+
+
+.section-item1 {
+    display: flex;             /* Ensure checkbox and text are aligned */
+    align-items: center;       /* Align checkbox and text vertically */
+    gap: 10px;                /* Space between checkbox and label */
+
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    padding: 10px;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+}
+
+
+
+.section-name1 {
+    flex-grow: 1;              /* Allows the text to take up remaining space */
+    width: auto;               /* Auto width to prevent squeezing */
+    border: 1px solid #ccc;
+    padding: 5px;
+    border-radius: 4px;
+}
+
+
+
+/*END OF CREATE SECTION*/
+
+/* ALERT */
+.alert-success {
+	background-color: #d4edda;
+	color: #155724;
+	border: 1px solid #c3e6cb;
+	padding: 10px 20px;
+	border-radius: 5px;
+	margin-bottom: 15px;
+	font-weight: bold;
+	font-size: 14px;
+	box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1);
+	transition: opacity 0.3s ease;
+	opacity: 1;
+}
+
+.alert-success.fade-out {
+	opacity: 0;
+	transition: opacity 1s ease;
+}
+/* END ALERT/
+
+
+
+
+/* END OF SEARCH BAR */
+
+.form-layer-container {
+    display: flex;
+    flex-direction: column; /* Stack forms vertically */
+    gap: 5px; /* Add some spacing between the forms */
+    align-items: flex-start; /* Align forms to the left */
+}
+
+/* Style for the document forms */
+.document-form {
+    display: inline-block; /* Inline but blocks form items */
+  
+}
+
+/* Style for the textarea */
+.remarks-textarea {
+    width: 100px;
+    height: 40px;
+    padding: 5px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    margin-bottom: 10px;
+}
+
+/* Approve button style */
+.approve-btn {
+    background-color: #28a745; /* Green background */
+    color: white;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-right: 5px;
+}
+
+/* Reject button style */
+.reject-btn {
+    background-color: #dc3545; /* Red background */
+    color: white;
+    padding: 5px 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+/* On hover effects */
+.approve-btn:hover, .reject-btn:hover {
+    opacity: 0.9;
+}
+
+
+a {
+	text-decoration: none;
+}
+
+li {
+	list-style: none;
+}
+d
+/* Add this to your CSS file */
+
+
+.side-menu li.active a {
+    background-color: #007bff; /* Change to your desired color */
+    color: #fff; /* Text color */
+}
+
+
+
+
+
+:root {
+	--poppins: 'Poppins', sans-serif;
+	--lato: 'Lato', sans-serif;
+
+	--light: #F9F9F9;
+	--blue: #3C91E6;
+	--light-blue: #CFE8FF;
+	--grey: #eee;
+	--dark-grey: #AAAAAA;
+	--dark: #342E37;
+	--red: #DB504A;
+	--yellow: #FFCE26;
+	--light-yellow: #FFF2C6;
+	--orange: #FD7238;
+	--light-orange: #FFE0D3;
+}
+
+html {
+	overflow-x: hidden;
+}
+
+body.dark {
+	--light: #0C0C1E;
+	--grey: #060714;
+	--dark: #FBFBFB;
+}
+
+body {
+	background: var(--grey);
+	overflow-x: hidden;
+}
+
+
+
+
+
+/* SIDEBAR */
+
+#sidebar {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 280px;
+	height: 100%;
+	background: var(--light);
+	z-index: 2000;
+	font-family: var(--lato);
+	transition: .3s ease;
+	overflow-x: hidden;
+	scrollbar-width: none;
+}
+#sidebar::state(webkit-scrollbar) {
+	display: none;
+}
+#sidebar.hide {
+	width: 60px;
+}
+#sidebar .brand {
+	font-size: 24px;
+	font-weight: 700;
+	height: 56px;
+	display: flex;
+	align-items: center;
+	color: var(--blue);
+	position: sticky;
+	top: 0;
+	left: 0;
+	background: var(--light);
+	z-index: 500;
+	padding-bottom: 20px;
+	box-sizing: content-box;
+}
+
+#sidebar .brand .logo {
+	height: 80px;
+	margin-top: 65px;
+	margin-left: 75px;
+}
+#sidebar .side-menu {
+	width: 100%;
+	margin-top: 48px;
+}
+#sidebar .side-menu li {
+	height: 48px;
+	background: transparent;
+	margin-left: 6px;
+	border-radius: 48px 0 0 48px;
+	padding: 4px;
+}
+#sidebar .side-menu li.active {
+	background: var(--grey);
+	position: relative;
+}
+#sidebar .side-menu li.active::before {
+	content: '';
+	position: absolute;
+	width: 40px;
+	height: 40px;
+	border-radius: 50%;
+	top: -40px;
+	right: 0;
+	box-shadow: 20px 20px 0 var(--grey);
+	z-index: -1;
+}
+#sidebar .side-menu li.active::after {
+	content: '';
+	position: absolute;
+	width: 40px;
+	height: 40px;
+	border-radius: 50%;
+	bottom: -40px;
+	right: 0;
+	box-shadow: 20px -20px 0 var(--grey);
+	z-index: -1;
+}
+#sidebar .side-menu li a {
+	width: 100%;
+	height: 100%;
+	background: var(--light);
+	display: flex;
+	align-items: center;
+	border-radius: 48px;
+	font-size: 16px;
+	color: var(--dark);
+	white-space: nowrap;
+	overflow-x: hidden;
+}
+
+#sidebar .side-menu.top li.active a {
+	color: var(--blue);
+}
+#sidebar.hide .side-menu li a {
+	width: calc(48px - (4px * 2));
+	transition: width .3s ease;
+}
+#sidebar .side-menu li a.logout {
+	color: var(--red);
+}
+#sidebar .side-menu.top li a:hover {
+	color: var(--blue);
+}
+#sidebar .side-menu li a .bx {
+	min-width: calc(60px  - ((4px + 6px) * 2));
+	display: flex;
+	justify-content: center;
+}
+
+/* BUTTONS */
+
+/* Container for buttons to provide spacing */
+.button-container {
+    display: flex;
+    justify-content: space-between; /* Align buttons to the sides */
+    margin-top: 20px; /* Add space above the buttons */
+	gap: 10px;
+}
+
+/* General button styles */
+.btn {
+    padding: 10px 15px; /* Adjust padding for a better button size */
+    border: none; /* Remove default border */
+    border-radius: 5px; /* Rounded corners */
+    font-size: 16px; /* Increase font size */
+    cursor: pointer; /* Change cursor on hover */
+    transition: background-color 0.3s ease; /* Smooth transition for background color */
+}
+
+/* Danger button style */
+.btn-danger {
+    background-color: #dc3545; /* Bootstrap danger color */
+    color: white; /* Text color */
+
+	
+}
+
+.btn-danger:hover {
+    background-color: #c82333; /* Darker shade on hover */
+}
+
+/* Secondary button style */
+.btn-secondary {
+    background-color: #6c757d; /* Bootstrap secondary color */
+    color: white; /* Text color */
+}
+
+.btn-secondary:hover {
+    background-color: #5a6268; /* Darker shade on hover */
+}
+
+
+
+/* END OF BUTTONS */
+
+/* SIDEBAR */
+
+
+/* UPLOAD DESIGN*/
+/* Container styling */
+.container {
+    max-width: 600px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Form group spacing */
+.form-group {
+    margin-bottom: 15px;
+}
+
+/* Form labels */
+.form-group label {
+    font-weight: bold;
+    margin-bottom: 5px;
+    display: block;
+    color: #333;
+}
+
+/* Form inputs */
+.form-control {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    color: #333;
+}
+
+/* Textarea */
+.form-control textarea {
+    height: 100px;
+    resize: vertical;
+}
+
+/* File input */
+input[type="file"] {
+    margin-top: 10px;
+}
+
+/* Button styling */
+.btn-primary {
+    background-color: #007bff;
+    border: none;
+    padding: 10px 20px;
+    color: #fff;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+/* Button hover effect */
+.btn-primary:hover {
+    background-color: #0056b3;
+}
+
+/* Success message styling */
+p {
+   
+    text-align: left;
+    margin-bottom: 20px;
+}
+
+
+/* UPLOAD DESIGN*/
+
+/* CONTENT */
+#content {
+	position: relative;
+	width: calc(100% - 280px);
+	left: 280px;
+	transition: .3s ease;
+}
+#sidebar.hide ~ #content {
+	width: calc(100% - 60px);
+	left: 60px;
+}
+
+
+
+
+/* NAVBAR */
+#content nav {
+	height: 56px;
+	background: var(--light);
+	padding: 0 24px;
+	display: flex;
+	align-items: center;
+	grid-gap: 24px;
+	font-family: var(--lato);
+	position: sticky;
+	top: 0;
+	left: 0;
+	z-index: 1000;
+}
+#content nav::before {
+	content: '';
+	position: absolute;
+	width: 40px;
+	height: 40px;
+	bottom: -40px;
+	left: 0;
+	border-radius: 50%;
+	box-shadow: -20px -20px 0 var(--light);
+}
+#content nav a {
+	color: var(--dark);
+}
+#content nav .bx.bx-menu {
+	cursor: pointer;
+	color: var(--dark);
+}
+#content nav .nav-link {
+	font-size: 16px;
+	transition: .3s ease;
+}
+#content nav .nav-link:hover {
+	color: var(--blue);
+}
+#content nav form {
+	max-width: 400px;
+	width: 100%;
+	margin-right: auto;
+}
+#content nav form .form-input {
+	display: flex;
+	align-items: center;
+	height: 36px;
+}
+#content nav form .form-input input {
+	flex-grow: 1;
+	padding: 0 16px;
+	height: 100%;
+	border: none;
+	background: var(--grey);
+	border-radius: 36px 0 0 36px;
+	outline: none;
+	width: 100%;
+	color: var(--dark);
+}
+#content nav form .form-input button {
+	width: 36px;
+	height: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	background: var(--blue);
+	color: var(--light);
+	font-size: 18px;
+	border: none;
+	outline: none;
+	border-radius: 0 36px 36px 0;
+	cursor: pointer;
+}
+#content nav .notification {
+	font-size: 20px;
+	position: relative;
+}
+#content nav .notification .num {
+	position: absolute;
+	top: -6px;
+	right: -6px;
+	width: 20px;
+	height: 20px;
+	border-radius: 50%;
+	border: 2px solid var(--light);
+	background: var(--red);
+	color: var(--light);
+	font-weight: 700;
+	font-size: 12px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+/* #content nav .switch-mode {
+	display: block;
+	min-width: 50px;
+	height: 25px;
+	border-radius: 25px;
+	background: var(--grey);
+	cursor: pointer;
+	position: relative;
+}
+#content nav .switch-mode::before {
+	content: '';
+	position: absolute;
+	top: 2px;
+	left: 2px;
+	bottom: 2px;
+	width: calc(25px - 4px);
+	background: var(--blue);
+	border-radius: 50%;
+	transition: all .3s ease;
+}
+#content nav #switch-mode:checked + .switch-mode::before {
+	left: calc(100% - (25px - 4px) - 2px);
+} */
+
+/* NOTIFICATION */
+.notification {
+    position: relative;
+    display: inline-block;
+}
+
+.notification .num {
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    background: red;
+    color: white;
+    border-radius: 50%;
+    padding: 5px 8px;
+    font-size: 12px; /* Adjust font size as needed */
+}
+
+.notification-modal {
+    display: none; /* Hidden by default */
+    position: absolute; /* Position relative to the notification bell */
+    z-index: 1000; /* Sit on top */
+    right: 30px; /* Align to the right */
+    top: 43px; /* Adjust this value to position it under the bell */
+    width: 380px; /* Set a fixed width for the modal */
+    height: 500px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15); /* Shadow effect for card appearance */
+    border-radius: 5px; /* Rounded corners */
+    overflow: hidden; /* Ensure content does not overflow */
+}
+
+.notification-modal-content {
+    background-color: #fefefe; /* White background for the card */
+    padding: 10px; /* Padding for the content */
+    border-radius: 5px; /* Rounded corners for the content */
+    height: 500px;
+}
+
+.notification-modal-content h2 {
+    font-family: Poppins;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.header h1 {
+    font-size: 24px;
+    font-weight: 700;
+    margin: 0;
+}
+
+.tabs {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.tabs .tab {
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-weight: 500;
+    cursor: pointer;
+	margin-top:10px;
+	margin-bottom: -20px;
+	font-family: var(--poppins);
+}
+
+.tabs .tab.active {
+    background-color: #3f8ff8;
+    color: #fff;
+}
+
+.notification-close {
+    color: #aaa;
+    float: right;
+    font-size: 20px; /* Adjust font size for the close button */
+    font-weight: bold;
+    cursor: pointer; /* Pointer cursor on hover */
+}
+
+.notification-close:hover,
+.notification-close:focus {
+    color: black; /* Change color on hover */
+}
+
+#notificationList {
+    list-style-type: none; /* Remove bullets */
+    padding: 0; /* Remove padding */
+    height: 500px; /* Limit height */
+    overflow-y: auto; /* Enable vertical scroll */
+}
+
+#notificationList li {
+    margin: 10px 0; /* Add spacing between notifications */
+    padding: 10px; /* Padding for each notification */
+    border-bottom: 1px solid #ddd; /* Bottom border for separation */
+    cursor: pointer; /* Change cursor to pointer on hover */
+    transition: background-color 0.3s; /* Smooth background change */
+}
+
+#notificationList li:hover {
+    background-color: #DCDCDC; /* Highlight on hover */
+}
+
+/* Unread notifications styling */
+#notificationList li.unread {
+    font-weight: bold; /* Make unread notifications bold */
+    background-color: #e2eeff; /* Light gray background for unread */
+    font-family: var(--poppins);
+    font-size: 14px;
+}
+
+#notificationList li.unread a {
+    color: black; /* Black text for unread notifications */
+    text-decoration: none;
+}
+#notificationList li.unread p {
+	color: rgb(68, 110, 202);
+}
+
+#notificationList li.read p {
+	color: rgb(116, 116, 116);
+}
+/* Read notifications styling */
+#notificationList li.read {
+    font-weight: normal;
+    color: rgb(245, 238, 238); /* Gray color for read notifications */
+    background-color: #faf7f7; /* White background for read */
+    font-family: var(--poppins);
+    font-size: 14px;
+}
+
+#notificationList li.read a {
+    color: black; /* Black text for read notifications */
+    text-decoration: none;
+}
+
+
+
+/*END OF NOTIFICATION*/
+
+
+/* COMMENT SECTION */
+.comments-box {
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 20px;
+    background-color: #f9f9f9; /* Subtle background */
+    max-width: 100%;
+    margin: 20px 0;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+}
+
+.comments-box h3 {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 15px;
+    border-bottom: 2px solid #ddd;
+    padding-bottom: 8px;
+    color: #333;
+}
+
+.comment-list {
+    max-height: 250px; /* Adjust height as needed */
+    overflow-y: auto; /* Enable vertical scrolling */
+    padding-right: 10px; /* Space for scrollbar */
+}
+.librarian-list {
+    max-height: 180px; /* Adjust height as needed */
+    overflow-y: auto; /* Enable vertical scrolling */
+    padding-right: 10px; /* Space for scrollbar */
+}
+
+.comment-item {
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 1px dashed #ccc;
+}
+
+.comment-item:last-child {
+    border-bottom: none;
+}
+
+.comment-item strong {
+    font-size: 16px;
+    color: #222;
+}
+
+.comment-text {
+    margin: 8px 0;
+    font-size: 15px;
+    color: #444;
+    line-height: 1.6;
+    transition: all 0.3s ease;
+}
+
+.comment-time {
+    font-size: 12px;
+    color: #777;
+    margin-top: 5px;
+    display: block;
+}
+
+
+.see-more-button {
+    color: #007bff;
+    background: none;
+    border: none;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    padding: 0;
+    margin-top: 5px;
+}
+
+.see-more-button:hover {
+    text-decoration: underline;
+}
+
+.hidden {
+    display: none;
+}
+
+
+
+
+
+
+/* NAVBAR */
+
+/* DATE TIME PICKER*/
+
+    /* Container for the date range picker */
+	#date-range-picker {
+		display: flex;
+		align-items: center;
+	}
+	#filterButton{
+		margin-right: 10px;
+		border-radius: 4px;
+		border-color:#007bff;
+		padding: 10px;
+		width: 70px;
+		background-color: #007bff;
+		color: white;
+		font-family: sans-serif;
+		font-weight: bold;
+	}
+	#filterButton:hover{
+		background-color: #0056b3;
+		border-color: #0056b3;
+	}
+	/* Input fields for date range */
+	#datepicker-range-start,
+	#datepicker-range-end {
+		padding: 10px;
+		border: 1px solid #ccc;
+		border-radius: 4px;
+		width: 120px; /* Adjust width as needed */
+		margin-right: 10px; /* Space between inputs */
+		margin-left: 10px; /* Space between inputs */
+		transition: border-color 0.3s;
+	}
+	
+	/* Add focus style to the inputs */
+	#datepicker-range-start:focus,
+	#datepicker-range-end:focus {
+		border-color: #007bff; /* Change border color on focus */
+		outline: none; /* Remove default outline */
+	}
+	
+	/* Text between the date inputs */
+	#date-range-picker .mx-4 {
+		color: #555; /* Text color */
+	}
+	
+	/* Styling for icons inside the input */
+	.relative .pointer-events-none svg {
+		position: absolute;
+		left: 10px; /* Adjust positioning */
+		top: 50%;
+		transform: translateY(-50%);
+	}
+	
+	/* Hover effect for the inputs */
+	#datepicker-range-start:hover,
+	#datepicker-range-end:hover {
+		border-color: #007bff; /* Change border color on hover */
+	}
+	
+	
+
+/* DATE TIME PICKER END*/
+
+/* NOTIFICATION */
+
+
+
+
+/*END OF NOTIFICATION */
+
+
+
+
+
+/* MAIN */
+#content main {
+	width: 100%;
+	padding: 36px 24px;
+	font-family: var(--poppins);
+	max-height: calc(100vh - 56px);
+	overflow-y: auto;
+}
+#content main .head-title {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	grid-gap: 16px;
+	flex-wrap: wrap;
+}
+#content main .head-title .left h1 {
+	font-size: 36px;
+	font-weight: 600;
+	margin-bottom: 10px;
+	color: var(--dark);
+}
+#content main .head-title .left .breadcrumb {
+	display: flex;
+	align-items: center;
+	grid-gap: 16px;
+}
+#content main .head-title .left .breadcrumb li {
+	color: var(--dark);
+}
+#content main .head-title .left .breadcrumb li a {
+	color: var(--dark-grey);
+	pointer-events: none;
+}
+#content main .head-title .left .breadcrumb li a.active {
+	color: var(--blue);
+	pointer-events: unset;
+}
+#content main .head-title .btn-download {
+	height: 36px;
+	padding: 0 16px;
+	border-radius: 36px;
+	background: var(--blue);
+	color: var(--light);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	grid-gap: 10px;
+	font-weight: 500;
+}
+
+
+
+.box-info {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* Creates 2 columns */
+    gap: 20px; /* Space between the boxes */
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+
+
+#content main .box-info {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+	grid-gap: 24px;
+	margin-top: 36px;
+}
+#content main .box-info li {
+	padding: 24px;
+	background: var(--light);
+	border-radius: 20px;
+	display: flex;
+	align-items: center;
+	grid-gap: 24px;
+}
+#content main .box-info li .bx {
+	width: 80px;
+	height: 80px;
+	border-radius: 10px;
+	font-size: 36px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+#content main .box-info li:nth-child(1) .bx {
+	background: var(--light-blue);
+	color: var(--blue);
+	
+}
+#content main .box-info li:nth-child(2) .bx {
+	background: lightgreen;
+	color: green;
+	
+}
+#content main .box-info li:nth-child(3) .bx {
+	background: var(--light-yellow);
+	color: var(--yellow);
+	
+}
+#content main .box-info li:nth-child(4) .bx {
+	background: var(--light-orange);
+	color: var(--orange);
+}
+#content main .box-info li .text h3 {
+	font-size: 24px;
+	font-weight: 600;
+	color: var(--dark);
+}
+#content main .box-info li .text p {
+	color: var(--dark);	
+}
+
+
+
+
+
+#content main .table-data {
+	display: flex;
+	flex-wrap: wrap;
+	grid-gap: 24px;
+	margin-top: 24px;
+	width: 100%;
+	color: var(--dark);
+}
+#content main .table-data > div {
+	border-radius: 20px;
+	background: var(--light);
+	padding: 24px;
+	overflow-x: auto;
+}
+#content main .table-data .head {
+	display: flex;
+	align-items: center;
+	grid-gap: 16px;
+	margin-bottom: 24px;
+}
+#content main .table-data .head h3 {
+	margin-right: auto;
+	font-size: 24px;
+	font-weight: 600;
+}
+#content main .table-data .head .bx {
+	cursor: pointer;
+}
+
+#content main .table-data .order {
+	flex-grow: 1;
+	flex-basis: 500px;
+}
+#content main .table-data .order table {
+	width: 100%;
+	border-collapse: collapse;
+}
+#content main .table-data .order table th {
+	padding-bottom: 12px;
+	font-size: 13px;
+	text-align: left;
+	border-bottom: 1px solid var(--grey);
+}
+#content main .table-data .order table td {
+	padding: 16px 0;
+}
+#content main .table-data .order table tr td:first-child {
+	display: flex;
+	align-items: center;
+	grid-gap: 12px;
+	padding-left: 6px;
+}
+#content main .table-data .order table td img {
+	width: 36px;
+	height: 36px;
+	border-radius: 50%;
+	object-fit: cover;
+}
+#content main .table-data .order table tbody tr:hover {
+	background: var(--grey);
+}
+#content main .table-data .order table tr td .status {
+	font-size: 10px;
+	padding: 6px 16px;
+	color: var(--light);
+	border-radius: 20px;
+	font-weight: 700;
+}
+#content main .table-data .order table tr td .status.completed {
+	background: var(--blue);
+}
+#content main .table-data .order table tr td .status.process {
+	background: var(--yellow);
+}
+#content main .table-data .order table tr td .status.pending {
+	background: var(--orange);
+}
+
+
+#content main .table-data .todo {
+	flex-grow: 1;
+	flex-basis: 300px;
+}
+#content main .table-data .todo .todo-list {
+	width: 100%;
+}
+#content main .table-data .todo .todo-list li {
+	width: 100%;
+	margin-bottom: 16px;
+	background: var(--grey);
+	border-radius: 10px;
+	padding: 14px 20px;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+#content main .table-data .todo .todo-list li .bx {
+	cursor: pointer;
+}
+#content main .table-data .todo .todo-list li.completed {
+	border-left: 10px solid var(--blue);
+}
+#content main .table-data .todo .todo-list li.not-completed {
+	border-left: 10px solid var(--orange);
+}
+#content main .table-data .todo .todo-list li:last-child {
+	margin-bottom: 0;
+}
+/* MAIN */
+/* CONTENT */
+
+
+
+
+
+
+
+
+
+@media screen and (max-width: 768px) {
+	#sidebar {
+		width: 200px;
+	}
+
+	#content {
+		width: calc(100% - 60px);
+		left: 200px;
+	}
+
+	#content nav .nav-link {
+		display: none;
+	}
+}
+
+
+
+
+
+
+@media screen and (max-width: 576px) {
+	#content nav form .form-input input {
+		display: none;
+	}
+
+	#content nav form .form-input button {
+		width: auto;
+		height: auto;
+		background: transparent;
+		border-radius: none;
+		color: var(--dark);
+	}
+
+	#content nav form.show .form-input input {
+		display: block;
+		width: 100%;
+	}
+	#content nav form.show .form-input button {
+		width: 36px;
+		height: 100%;
+		border-radius: 0 36px 36px 0;
+		color: var(--light);
+		background: var(--red);
+	}
+
+	#content nav form.show ~ .notification,
+	#content nav form.show ~ .profile {
+		display: none;
+	}
+
+	#content main .box-info {
+		grid-template-columns: 1fr;
+	}
+
+	#content main .table-data .head {
+		min-width: 420px;
+	}
+	#content main .table-data .order table {
+		min-width: 420px;
+	}
+	#content main .table-data .todo .todo-list {
+		min-width: 420px;
+	}
+}
