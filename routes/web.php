@@ -14,12 +14,13 @@ use App\Http\Controllers\LibrarianCommentController;
 use App\Http\Controllers\ReplyComment;
 
 
-
-
 // Public Route
 Route::get('/', function () {
     return view('welcome');
 });
+Route::get('/chat', [DocumentController::class, 'showChat'])->name('chat.index');
+
+
 
 // Middleware for Authentication and Verification
 Route::middleware(['auth', 'verified'])->group(function () {
@@ -66,7 +67,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
     });
 
 });
-
 
 Route::get('/get-selected-sections/{documentId}', [DocumentController::class, 'getSelectedSections']);
 Route::post('/documents/{id}/save-sections', [DocumentController::class, 'saveSections']);

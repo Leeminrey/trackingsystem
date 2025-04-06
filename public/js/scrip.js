@@ -258,3 +258,17 @@ $(document).ready(function() {
             modal.style.display = "none"; // Close modal
         });
     }
+
+
+    // CHATTING SYSTEM
+    
+    function toggleChatModal(){
+        let modal = document.getElementById('chatModal');
+        modal.style.display = modal.style.display === 'block' ? 'none' : 'block';
+    
+    }
+    
+    document.getElementById('minimizeBtn').addEventListener('click', function(){
+        let modal = document.getElementById('chatModal');
+        modal.style.display = 'none';
+    })

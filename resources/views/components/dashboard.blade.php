@@ -38,13 +38,13 @@
                     <p>Pending</p>
                 </span>
             </li>
-            <li onclick="location.href='{{ route('documents.reject') }}'" style="cursor: pointer;">
+            <!-- <li onclick="location.href='{{ route('documents.reject') }}'" style="cursor: pointer;">
                 <i class='bx bxs-x-circle'></i>
                 <span class="text">
                     <h3>{{ $rejected }}</h3>
                     <p>Revise</p>
                 </span>
-            </li>
+            </li> -->
             @endif
         </ul>
 
@@ -125,6 +125,8 @@
 
             <!-- Pagination Controls -->
             @include('components.pagination')
+
+            @include('components.chat-widget')
         </div>
     </div>
 </div>
