@@ -15,6 +15,7 @@ class HomeController extends Controller
     public function sectionsDashboard()
 {
     // Get the logged-in user's role and section ID
+    $users = User::All();
     $user = Auth::user();
     $userRole = $user->role;
     $sectionId = $this->getSectionIdFromRole($userRole);
@@ -50,7 +51,7 @@ class HomeController extends Controller
         ->get();
 
     // Return the view with the filtered counts and documents
-    return view('sections.sectionsDashboard', compact('documents', 'approvedCount', 'pendingCount', 'rejectedCount','completedCount'));
+    return view('sections.sectionsDashboard', compact('documents', 'approvedCount', 'pendingCount', 'rejectedCount','completedCount', 'users'));
 }
 
     
@@ -81,6 +82,7 @@ private function getSectionIdFromRole($role)
 {
     // Get the current user's role
     $currentRole = auth()->user()->role;
+    $users = User::All();
 
     // Determine which documents to show based on the user's role
     if ($currentRole === 'CL') { // Boss 1's role
@@ -93,7 +95,7 @@ private function getSectionIdFromRole($role)
         $documents = []; // Handle case where user is neither Boss 1 nor Boss 2
     }
 
-    return view('boss.bossDashboard', compact('documents')); // Return the same dashboard view for both
+    return view('boss.bossDashboard', compact('documents', 'users')); // Return the same dashboard view for both
 }
 
 public function history()

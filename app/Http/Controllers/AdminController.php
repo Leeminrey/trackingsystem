@@ -84,6 +84,8 @@ class AdminController extends Controller
     }
     public function dashboard()
     {
+
+        $users = User::All();
         // Get the necessary counts from the database
         $incomingCount = Document::where('uploaded_from', 'incoming')->count(); // Assuming 'status' column is used for 'incoming' status
         $outgoingCount = Document::where('uploaded_from', 'outgoing')->count(); // Assuming 'status' column is used for 'outgoing' status
@@ -91,7 +93,7 @@ class AdminController extends Controller
         $sectionCount = Section::count(); // Get the total count of sections
     
         // Pass the counts to the view
-        return view('admin.adminDashboard', compact('incomingCount', 'outgoingCount', 'userCount', 'sectionCount'));
+        return view('admin.adminDashboard', compact('incomingCount', 'outgoingCount', 'userCount', 'sectionCount', 'users'));
     }
     
     

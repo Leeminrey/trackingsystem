@@ -265,10 +265,26 @@ $(document).ready(function() {
     function toggleChatModal(){
         let modal = document.getElementById('chatModal');
         modal.style.display = modal.style.display === 'block' ? 'none' : 'block';
-    
+        
     }
     
     document.getElementById('minimizeBtn').addEventListener('click', function(){
         let modal = document.getElementById('chatModal');
         modal.style.display = 'none';
+    })
+
+  
+
+    document.getElementById('searchUser').addEventListener('input', function(){
+        let searchValue = this.value.toLowerCase();
+        let users = document.querySelectorAll('.user-item');
+        
+        users.forEach(function (user){
+            let userName = user.querySelector('.user-names').textContent.toLowerCase();
+            if (userName.includes(searchValue)){
+                user.style.display = 'block';
+            } else {
+                user.style.display = 'none';
+            }
+        })
     })

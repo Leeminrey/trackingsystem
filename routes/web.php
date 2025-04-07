@@ -18,7 +18,8 @@ use App\Http\Controllers\ReplyComment;
 Route::get('/', function () {
     return view('welcome');
 });
-Route::get('/chat', [DocumentController::class, 'showChat'])->name('chat.index');
+
+Route::get('/chat', [DocumentController::class, 'chatList'])->name('chat.index');
 
 
 

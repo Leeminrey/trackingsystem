@@ -34,7 +34,7 @@
         border-radius: 50%;
         box-shadow: 0px 4px 8px rgba(0,0,0,0.2);
         display: flex;
-        background-color: #007bff;
+        background-color: #80B3FF;
         cursor: pointer;
         align-items: center;
         bottom: 30px;
@@ -48,11 +48,12 @@
     }
     
     .chat-floating-button i:hover{
-        color: #007bff;
+        color: #FFF;
     }
     .chat-floating-button i{
-        color: #404040;
+        color: #0052CC;
         font-size: 35px;
+        padding-top: 3px;
 
     }
     /* Tooltip for chat button */
@@ -83,7 +84,7 @@
     .chat-modal{
         background-color: white; /* Light gray background for the container */
         border: 1px solid #ccc; /* Optional border */
-        width: 280px; /* Adjust width as needed */
+        width: 355px; /* Adjust width as needed */
         bottom: 15px;
         right: 100px;
         height: 380px;
@@ -91,8 +92,9 @@
         position:fixed;
         border-radius: 5px; /* Optional rounded corners */
         overflow: hidden; /* To contain the header's border-radius */
-        display: none;
+        /* display: none; */
         transition: background-color 0.3s ease;
+
     }
     .chat-modal:hover{
         overflow-y: auto;
@@ -100,11 +102,10 @@
     }
     .chat-modal ul{
 
-        background-color: #f0f0f0;
-        padding-top: 5px;
+        padding-top: 70px;
         padding-bottom: 10px;
         cursor: pointer;
-        padding-right: 10px;
+        padding-right: 60px;
         padding-left: 10px;
        
     }
@@ -116,9 +117,10 @@
     }
     .chat-modal li p {
         font-size: 13px;
-        margin-bottom: 5px;
+        margin-bottom: 20px;
         margin-left: 10px;
         white-space: nowrap;
+        z-index: 1000;
     }
     .message {
         overflow: hidden;
@@ -126,13 +128,17 @@
         text-overflow: ellipsis;
     }
     .chat-modal h4{
-        background-color: #007bff; /* Dark background for the header */
-        color: #fff; /* White text for the header */
+        background-color: white; /* Dark background for the header */
+        color: #000; /* White text for the header */
         padding: 5px;
-        text-align: center;
+        font-size: 20px;
         font-weight: bold;
         padding-left: 20px;
                 
+    }
+    .chatTitle{
+        position:fixed;
+        overflow-y: auto;
     }
     .chat-modal h4 i{
        float: right;
@@ -141,6 +147,64 @@
        padding-right: 2px;
     }
 
+    .user-icon
+    {
+        width: 40px;
+        height: 40px;
+        border: 1px solid;
+        border-radius: 50%;
+        z-index: 1000;
+        display: flex;
+        float: left;
+        background-color: #1976d2;
+        margin-right: 10px;
+        background-color: hsl(rand(0, 360), 70%, 60%);
+        justify-content: center;
+        align-items: center;
+    }
+    .user-icon h2{
+        color: #E8E8E8;
+    }
+
+    .timeIndex{
+        font-size: 10px;
+        float:right;
+        z-index: 1000;
+        display: flex;
+        margin-top: -37px;
+        margin-right: -50px;
+        overflow: hidden;
+    }
+    hr{
+        margin-right: -55px;
+    }
+    .search-user
+    {
+        width: 330px;
+        border: 1px solid #787878;
+        border-radius: 15px;
+        height: 30px;
+        display: flex;
+        margin-left: 10px;
+        margin-top: -29px;
+        background-color: #F8F8F8;
+        padding-left: 10px;
+        
+    }
+    .bx-search-alt{
+        display: flex;
+        font-size: 25px;
+        margin-left: 305px;
+        z-index: 1000;
+    }
+    .item-box{
+        transition: padding-left 0.2s ease;
+    }
+   .item-box:hover{
+        cursor: pointer;
+        padding-left: 30px;
+   }
+ 
 /*CHATTING SYSTEM*/
     
 

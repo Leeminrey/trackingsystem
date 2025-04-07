@@ -39,6 +39,8 @@
 			
         </ul>
 
+        
+        @include('components.chat-widget', ['users' => $users])
 
 
 </div>

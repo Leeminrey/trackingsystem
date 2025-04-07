@@ -126,7 +126,7 @@
             <!-- Pagination Controls -->
             @include('components.pagination')
 
-            @include('components.chat-widget')
+            @include('components.chat-widget', ['users' => $users])
         </div>
     </div>
 </div>

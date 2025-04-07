@@ -5,13 +5,15 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth; ;
 use App\Models\Document;
-
+use App\Models\User;
 
 class DashboardController extends Controller
 {
     
     public function dashboard()
 {
+
+    $users = User::All();
     // Get the logged-in user
     $user = Auth::user();
 
@@ -57,7 +59,7 @@ class DashboardController extends Controller
     ->where('status', 'completed')
     ->count();
     // Pass documents and counts to the view
-    return view('components.dashboard', compact('documents', 'approve', 'pending', 'rejected','completed'));
+    return view('components.dashboard', compact('documents', 'approve', 'pending', 'rejected','completed', 'users'));
 }
 
     

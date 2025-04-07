@@ -56,12 +56,16 @@
             </table>
 
             @include('components.pagination')
+
         </div>
     </div>
 </div>
 
-<div id="document-details-container" style="display: none;">
+    @include('components.chat-widget', ['users' => $users])
+
+    <div id="document-details-container" style="display: none;">
     <!-- Document details will be injected here -->
 </div>
 
+            
 @endsection
