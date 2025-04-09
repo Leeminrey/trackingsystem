@@ -4,7 +4,7 @@
 
 
 <div id="chatModal" class="chat-modal">
-    <div class="chatTitle">
+    <div class="chatTitle" >
         <h4>MESSAGES<i class='bx bx-minus' id="minimizeBtn"></i></h4>
         
         <i class='bx bx-search-alt' id="searchChatBtn"></i>
@@ -24,4 +24,52 @@
             </div>
             @endforeach
         </ul>
+
+     <!-- CONVERSTATION CONTAINER-->
+     <div id="openChatWith" class="converstationWith">
+     <!-- HEADER -->
+    <div class="chat-header">
+        <i class="bx bx-arrow-back" onclick="backToUserList()" style="cursor: pointer;"></i>
+        <div class="chat-user-info">
+            <h4 id="chatWithName">Edward Mabini</h4>
+            <span class="status">Online</span>
+        </div>
+        <div class="minimize-modal">
+             <i class='bx bx-minus' id="minimizeBtn"></i>
+        </div>
+    </div>
+
+    <div class="chat-messages" id="chatMessages">
+            <div class="message incoming">
+                <div class="bubble">Baby!, Kumain na po ba ikaw? 👉🥺👈</div>
+                <div class="timestamp">2 min ago</div>
+            </div>
+
+            <div class="message outgoing">
+                <div class="bubble">Hindi pa baby ko 🥺🥺🥺, bilan mo ako burger and milktea baby ko. 👉🥺👈🥰🥰</div>
+                <div class="timestamp">2 min ago.</div>
+            </div>
+
+            <div class="message incoming">
+                <div class="bubble">Sige baby wait moko and dadalin ko d'yan. Bembang kita after mo kumain ah? 😁😁😁😁</div>
+                <div class="timestamp">1 min ago</div>
+            </div>
+
+            <div class="message outgoing">
+                <div class="bubble">Sige baby shave na rin ako habang wala ka pa hehe... 👉👌🥵💦</div>
+                <div class="timestamp">1 min ago.</div>
+            </div>
+            
+        </div>
+
+        <!-- INPUT BAR-->
+        <div class="chat-input">
+            <input type="text" placeholder="Type your message here bitch..." />
+            <button class="send-btn"><i class="bx bx-send"></i></button>
+    </div>
+
+  
+     </div>
 </div>
+
+    
