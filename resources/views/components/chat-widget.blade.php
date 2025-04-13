@@ -13,7 +13,11 @@
         <ul class="message-item">
             @foreach ($users as $user)
             <div class="item-box">
-                <li class="user-item">
+                <li class="user-item"
+                    data-user-id="{{$user->id }}"
+                    data-user-name="{{ $user->name}}"
+                    data-user-role="{{ $user->role }}"
+                    onclick="openConversation(this)">
                     <div class="user-icon" style="background-color: {{ '#' . substr(md5($user->id), 0, 6) }};">
                         <h2>{{strtoupper(substr($user->name, 0, 1))}}</h3>
                     </div>
@@ -26,17 +30,15 @@
         </ul>
 
      <!-- CONVERSTATION CONTAINER-->
-     <div id="openChatWith" class="converstationWith">
+     <div id="openChatWith" class="converstationWith" style="display: none";>
      <!-- HEADER -->
     <div class="chat-header">
         <i class="bx bx-arrow-back" onclick="backToUserList()" style="cursor: pointer;"></i>
         <div class="chat-user-info">
-            <h4 id="chatWithName">Edward Mabini</h4>
-            <span class="status">Online</span>
+            <h4 id="chatWithName">Sample Name</h4>
+            <span class="status">(sample section)</span>
         </div>
-        <div class="minimize-modal">
-             <i class='bx bx-minus' id="minimizeBtn"></i>
-        </div>
+        
     </div>
 
     <div class="chat-messages" id="chatMessages">
@@ -64,7 +66,7 @@
 
         <!-- INPUT BAR-->
         <div class="chat-input">
-            <input type="text" placeholder="Type your message here bitch..." />
+            <textarea id="chatInput" placeholder="Aa" rows="1"></textarea>
             <button class="send-btn"><i class="bx bx-send"></i></button>
     </div>
 
@@ -72,4 +74,3 @@
      </div>
 </div>
 
-    

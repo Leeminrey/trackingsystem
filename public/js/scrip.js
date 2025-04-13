@@ -265,6 +265,8 @@ $(document).ready(function() {
     function toggleChatModal(){
         let modal = document.getElementById('chatModal');
         modal.style.display = modal.style.display === 'block' ? 'none' : 'block';
+        document.querySelector('.message-item').style.display = 'block';
+        document.querySelector('.chatTitle').style.display = 'block';
         
     }
     
@@ -288,3 +290,38 @@ $(document).ready(function() {
             }
         })
     })
+
+    function openConversation(element){
+        const userName = element.getAttribute('data-user-name');
+        const userRole = element.getAttribute('data-user-role');
+
+        document.querySelector('.message-item').style.display = 'none';
+        document.querySelector('.chatTitle').style.display = 'none';
+        document.getElementById('openChatWith').style.display = 'block';
+
+        document.getElementById('chatWithName').textContent = userName;
+        document.querySelector('#chatWithName + .status').textContent = `(${userRole})`;
+
+    }
+
+    function backToUserList(){
+        document.querySelector('.message-item').style.display = 'block';
+        
+        document.querySelector('.chatTitle').style.display = 'block';
+        document.getElementById('openChatWith').style.display = 'none';
+
+    }
+
+    window.onload = function(){
+        document.querySelector('.message-item').style.display = 'block';
+        
+        document.querySelector('.chatTitle').style.display = 'block';
+        document.getElementById('openChatWith').style.display = 'none';
+    }
+
+    const textarea = document.getElementById("chatInput");
+
+    textarea.addEventListener("input", () => {
+        textarea.style.height = "auto"; // Reset height
+        textarea.style.height = Math.min(textarea.scrollHeight, 120) + "px"; // 120px = max 4 lines
+    });
