@@ -43,34 +43,150 @@
 
     <div class="chat-messages" id="chatMessages">
             <div class="message incoming">
-                <div class="bubble">Baby!, Kumain na po ba ikaw? 👉🥺👈</div>
-                <div class="timestamp">2 min ago</div>
+                <div class="bubble"></div>
+                <div class="timestamp"></div>
             </div>
 
             <div class="message outgoing">
-                <div class="bubble">Hindi pa baby ko 🥺🥺🥺, bilan mo ako burger and milktea baby ko. 👉🥺👈🥰🥰</div>
-                <div class="timestamp">2 min ago.</div>
+                <div class="bubble"></div>
+                <div class="timestamp"></div>
             </div>
 
-            <div class="message incoming">
-                <div class="bubble">Sige baby wait moko and dadalin ko d'yan. Bembang kita after mo kumain ah? 😁😁😁😁</div>
-                <div class="timestamp">1 min ago</div>
-            </div>
-
-            <div class="message outgoing">
-                <div class="bubble">Sige baby shave na rin ako habang wala ka pa hehe... 👉👌🥵💦</div>
-                <div class="timestamp">1 min ago.</div>
-            </div>
             
-        </div>
+    </div>
 
         <!-- INPUT BAR-->
-        <div class="chat-input">
+    <div class="chat-input">
             <textarea id="chatInput" placeholder="Aa" rows="1"></textarea>
-            <button class="send-btn"><i class="bx bx-send"></i></button>
+            <button class="send-btn" onclick="sendMessage()"><i class="bx bx-send"></i></button>
     </div>
 
   
      </div>
 </div>
 
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        let selectedUserId = null;
+        let selectedUserName = null;
+        let receiverRole = null;
+    
+        // Open conversation when clicking a user
+        function openConversation(userElement) {
+            selectedUserId = userElement.getAttribute('data-user-id');
+            selectedUserName = userElement.getAttribute('data-user-name');
+            receiverRole = userElement.getAttribute('data-user-role');
+    
+            // Update the header with the user's name and role
+            document.getElementById('chatWithName').innerText = selectedUserName;
+            document.querySelector('.status').innerText = `(${receiverRole})`;
+    
+            // Show the conversation container
+            document.querySelector('.message-item').style.display = 'none';
+            document.querySelector('.chatTitle').style.display = 'none';
+            document.getElementById('openChatWith').style.display = 'block';
+    
+            // Fetch existing messages between the two users
+            fetchMessages(selectedUserId);
+    
+            // Listen to the private chat channel for new messages
+            listenForMessages(selectedUserId);
+        }
+    
+        // Fetch previous messages between users
+        function fetchMessages(userId) {
+            axios.get(`/messages/${userId}`)
+                .then(response => {
+                    const messages = response.data;
+                    const messagesContainer = document.getElementById('chatMessages');
+                    messagesContainer.innerHTML = '';
+    
+                    // Display all messages
+                    messages.forEach(message => {
+                        const messageElement = document.createElement('div');
+                        messageElement.classList.add(message.sender_id === selectedUserId ? 'incoming' : 'outgoing');
+                        messageElement.innerHTML = `
+                            <div class="bubble">${message.messages}</div>
+                            <div class="timestamp">${message.created_at}</div>
+                        `;
+                        messagesContainer.appendChild(messageElement);
+                    });
+    
+                    // Scroll to the bottom
+                    messagesContainer.scrollTop = messagesContainer.scrollHeight;
+                })
+                .catch(error => {
+                    console.log('Error fetching messages:', error);
+                });
+        }
+    
+        // Listen for new messages from Echo
+        function listenForMessages(userId) {
+            window.Echo.private('chat.' + userId)
+                .listen('Messagesent', function(event) {
+                    const messageContainer = document.getElementById('chatMessages');
+                    const message = event.message;
+    
+                    // Display the new incoming message
+                    const messageElement = document.createElement('div');
+                    messageElement.classList.add(message.sender_id === selectedUserId ? 'incoming' : 'outgoing');
+                    messageElement.innerHTML = `
+                        <div class="bubble">${message.messages}</div>
+                        <div class="timestamp">${message.created_at}</div>
+                    `;
+                    messageContainer.appendChild(messageElement);
+    
+                    // Scroll to the bottom
+                    messageContainer.scrollTop = messageContainer.scrollHeight;
+                });
+        }
+    
+        // Send a message
+        document.querySelector('.send-btn').addEventListener('click', function() {
+            const messageInput = document.getElementById('chatInput').value;
+            
+            // Check if the message is not empty
+            if (messageInput.trim()) {
+                // Log the data being sent (Optional: for debugging purposes)
+                console.log({
+                    receiver_id: selectedUserId,
+                    messages: messageInput
+                });
+
+                // Send the message via axios
+                axios.post('/messages', {
+                    receiver_id: selectedUserId,  // The receiver ID, this should be set from your UI logic
+                    messages: messageInput       // The message content
+                })
+                .then(response => {
+                    console.log('Message saved:', response.data);  // Log the response to see if the message was saved
+                    document.getElementById('chatInput').value = ''; // Clear the input field after sending
+                    document.getElementById('chatInput').focus();   // Focus back on input field
+                    
+                    // Scroll to the bottom after sending
+                    const messagesContainer = document.getElementById('chatMessages');
+                    messagesContainer.scrollTop = messagesContainer.scrollHeight;
+                })
+                .catch(error => {
+                    console.log('Error sending message:', error);
+                    alert('There was an error sending the message. Please try again.');
+                });
+            }
+        });
+
+        // Minimize chat modal
+        document.getElementById('minimizeBtn').addEventListener('click', function() {
+            document.getElementById('chatModal').style.display = 'none';
+        });
+    
+        // Back to user list from conversation
+        function backToUserList() {
+            document.querySelector('.message-item').style.display = 'block';    
+            document.querySelector('.chatTitle').style.display = 'block';
+            document.getElementById('openChatWith').style.display = 'none';
+        }
+    
+        window.openConversation = openConversation; // Make openConversation accessible
+        window.backToUserList = backToUserList; // Make backToUserList accessible
+    });
+</script>

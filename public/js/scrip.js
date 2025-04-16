@@ -269,11 +269,6 @@ $(document).ready(function() {
         document.querySelector('.chatTitle').style.display = 'block';
         
     }
-    
-    document.getElementById('minimizeBtn').addEventListener('click', function(){
-        let modal = document.getElementById('chatModal');
-        modal.style.display = 'none';
-    })
 
   
 
@@ -291,26 +286,6 @@ $(document).ready(function() {
         })
     })
 
-    function openConversation(element){
-        const userName = element.getAttribute('data-user-name');
-        const userRole = element.getAttribute('data-user-role');
-
-        document.querySelector('.message-item').style.display = 'none';
-        document.querySelector('.chatTitle').style.display = 'none';
-        document.getElementById('openChatWith').style.display = 'block';
-
-        document.getElementById('chatWithName').textContent = userName;
-        document.querySelector('#chatWithName + .status').textContent = `(${userRole})`;
-
-    }
-
-    function backToUserList(){
-        document.querySelector('.message-item').style.display = 'block';
-        
-        document.querySelector('.chatTitle').style.display = 'block';
-        document.getElementById('openChatWith').style.display = 'none';
-
-    }
 
     window.onload = function(){
         document.querySelector('.message-item').style.display = 'block';
@@ -325,3 +300,10 @@ $(document).ready(function() {
         textarea.style.height = "auto"; // Reset height
         textarea.style.height = Math.min(textarea.scrollHeight, 120) + "px"; // 120px = max 4 lines
     });
+
+    // Listen for a new message in the chat channel
+window.Echo.private('chat.' + receiverId)
+.listen('Messagesent', (event) => {
+    console.log(event.message); // Handle the message in your chat UI
+    // Update the chat UI with the new message (e.g., append it to the messages list)
+});

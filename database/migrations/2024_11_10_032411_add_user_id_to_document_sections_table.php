@@ -22,6 +22,8 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('document_sections', function (Blueprint $table) {
+              // Drop foreign key before dropping the column
+              $table->dropForeign(['user_id']);
             $table->dropColumn('user_id');
         });
     }

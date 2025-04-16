@@ -12,6 +12,7 @@ use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\LibrarianCommentController;
 use App\Http\Controllers\ReplyComment;
+use App\Http\Controllers\MessageController;
 
 
 // Public Route
@@ -20,6 +21,12 @@ Route::get('/', function () {
 });
 
 Route::get('/chat', [DocumentController::class, 'chatList'])->name('chat.index');
+
+Route::middleware('auth')->group(function(){
+    Route::post('/messages', [MessageController::class, 'store']);
+    Route::get('/messages/{userId}', [MessageController::class, 'fetchMessages']);
+    Route::post('/messages/{messageId}/read', [MessageController::class, 'markAsRead']);
+});
 
 
 
