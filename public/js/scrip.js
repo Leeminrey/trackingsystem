@@ -307,3 +307,5 @@ window.Echo.private('chat.' + receiverId)
     console.log(event.message); // Handle the message in your chat UI
     // Update the chat UI with the new message (e.g., append it to the messages list)
 });
+
+

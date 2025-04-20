@@ -3,6 +3,8 @@
 </diV>
 
 
+
+
 <div id="chatModal" class="chat-modal">
     <div class="chatTitle" >
         <h4>MESSAGES<i class='bx bx-minus' id="minimizeBtn"></i></h4>
@@ -66,6 +68,8 @@
 </div>
 
 <script>
+
+
     document.addEventListener('DOMContentLoaded', function() {
         let selectedUserId = null;
         let selectedUserName = null;
@@ -92,6 +96,29 @@
             // Listen to the private chat channel for new messages
             listenForMessages(selectedUserId);
         }
+
+        function formatTimestamp(timestamp) {
+            const now = new Date();
+            const messageTime = new Date(timestamp);
+            const timeDiff = now - messageTime;
+            const seconds = Math.floor(timeDiff / 1000);
+            const minutes = Math.floor(seconds / 60);
+            const hours = Math.floor(minutes / 60);
+            const days = Math.floor(hours / 24);
+            const months = Math.floor(days / 30);
+
+            if (seconds < 60) {
+                return `${seconds} seconds ago`;
+            } else if (minutes < 60) {
+                return `${minutes} minutes ago`;
+            } else if (hours < 24) {
+                return `${hours} hours ago`;
+            } else if (days < 30) {
+                return `${days} day${days > 1 ? 's' : ''} ago`;
+            } else {
+                return `${months} month${months > 1 ? 's' : ''} ago`;
+            }
+        }
     
         // Fetch previous messages between users
         function fetchMessages(userId) {
@@ -99,15 +126,17 @@
                 .then(response => {
                     const messages = response.data;
                     const messagesContainer = document.getElementById('chatMessages');
+                    const currentUserId = {{ auth()->id() }};
                     messagesContainer.innerHTML = '';
     
                     // Display all messages
                     messages.forEach(message => {
                         const messageElement = document.createElement('div');
-                        messageElement.classList.add(message.sender_id === selectedUserId ? 'incoming' : 'outgoing');
+                        messageElement.classList.add(message.sender_id === currentUserId ? 'outgoing' : 'incoming');
+                        const formattedTime = formatTimestamp(message.created_at);
                         messageElement.innerHTML = `
                             <div class="bubble">${message.messages}</div>
-                            <div class="timestamp">${message.created_at}</div>
+                            <div class="timestamp">${formattedTime}</div>
                         `;
                         messagesContainer.appendChild(messageElement);
                     });
@@ -126,13 +155,15 @@
                 .listen('Messagesent', function(event) {
                     const messageContainer = document.getElementById('chatMessages');
                     const message = event.message;
+                    const currentUserId = {{ auth()->id() }};
     
                     // Display the new incoming message
                     const messageElement = document.createElement('div');
-                    messageElement.classList.add(message.sender_id === selectedUserId ? 'incoming' : 'outgoing');
+                    messageElement.classList.add(message.sender_id === currentUserId ? 'outgoing' : 'incoming');
+                    const formattedTime = formatTimestamp(message.created_at);
                     messageElement.innerHTML = `
                         <div class="bubble">${message.messages}</div>
-                        <div class="timestamp">${message.created_at}</div>
+                        <div class="timestamp">${formattedTime}</div>
                     `;
                     messageContainer.appendChild(messageElement);
     
